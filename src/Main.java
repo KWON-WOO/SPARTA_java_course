@@ -12,6 +12,11 @@ public class Main {
         MyCalculator calculator = new MyCalculator();
         int num1 = 11340;
 //        System.out.println(~num1);
-
+        char num = '9';
+        String str = "";
+//        int number = (int)num;
+//        System.out.println( num > '0');
+//        System.out.println(calculator.sum(num1++,11340));
+        System.out.println(calculator.calculate("22*33"));
     }
 }
