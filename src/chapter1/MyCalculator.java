@@ -25,25 +25,25 @@ public class MyCalculator {
         return result;
     }
 
-    public double abs(double a) { //절댓값
-        if (a == 0) return a;
-        else if  (a < 0) return -a;
-        else return a;
-    }
-
-    public double max(double a, double b) { //큰 값
-        if (b > a) return b;
-        else return a;
-    }
-
-    public double min(double a, double b) { //작은 값
-        if  (b < a) return b;
-        else return a;
-    }
-
-    public double avg(double a, double b) { //평균
-        return (a + b) / 2;
-    }
+//    public double abs(double a) { //절댓값
+//        if (a == 0) return a;
+//        else if  (a < 0) return -a;
+//        else return a;
+//    }
+//
+//    public double max(double a, double b) { //큰 값
+//        if (b > a) return b;
+//        else return a;
+//    }
+//
+//    public double min(double a, double b) { //작은 값
+//        if  (b < a) return b;
+//        else return a;
+//    }
+//
+//    public double avg(double a, double b) { //평균
+//        return (a + b) / 2;
+//    }
 
     public int factorial(int num1) {
         int result = num1;
