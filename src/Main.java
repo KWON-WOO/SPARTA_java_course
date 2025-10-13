@@ -17,6 +17,6 @@ public class Main {
 //        int number = (int)num;
 //        System.out.println( num > '0');
 //        System.out.println(calculator.sum(num1++,11340));
-        System.out.println(calculator.calculate("22*33"));
+        System.out.println(calculator.calculate("28+33*311"));
     }
 }

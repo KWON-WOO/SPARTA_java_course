@@ -5,62 +5,88 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyCalculator {
-    String operatorStack;
-    int expressionArrayIndex;
-    List<Double> numStack;
+    private String operatorStack;
+    private int expressionIndex;
+    private List<Double> numStack;
+    private char[] expressionArray;
+    private int expressionLength;
 
     public double calculate(String expression) {
-        operatorStack = "";
-        expressionArrayIndex = 0;
+        operatorStack = "";     //연산 우선순위를 위한 연산자 스택 분리
+        expressionIndex = 0;    //연산을 위해 받아온 문자열 인덱스
         numStack = new ArrayList<>();
-        char[] expressionArray = expression.toCharArray();
-        int expressionLength = expressionArray.length;
-        String stringNumber = "";
+        expressionArray = expression.toCharArray();
+        expressionLength = expressionArray.length - 1;  //문자열 길이
+        String stringNumber = "";   //받아온 문자열 숫자만 잘라낸 거
         double num1 = 0;
         double result = 0;
-        for (expressionArrayIndex = 0; expressionArrayIndex < expressionLength; expressionArrayIndex++) {
-//            System.out.println(expressionArray[expressionArrayIndex]);
-            if (isNumber(expressionArray[expressionArrayIndex])
-                    || expressionArray[expressionArrayIndex] == '.'
-            || expressionArrayIndex == expressionLength - 1) {
-                stringNumber += expressionArray[expressionArrayIndex];
-            } else {
-//                System.out.println(stringNumber);
-                num1 = Double.valueOf(stringNumber);
-                result = operationData(num1, expressionArray, expressionArray[expressionArrayIndex++]);
-                stringNumber = "";
-            }
+        num1 = returnNumber(expressionLength, expressionIndex);     //문자열에서 값 잘라서 num1에 넘겨줌.
+//        System.out.println(num1 + "\t" + expressionArray[expressionIndex]);
+//        System.out.println(stringNumber);
+        if (dataErrorCheck(expressionArray[expressionIndex])) {
+            char operator = expressionArray[expressionIndex++]; //연산자를 넘겨주고 인덱스를 추가함.
+            operatorStack += operator;
+            result = operationData(num1, expressionArray, operator);
+            System.out.println(result);
+            stringNumber = "";
         }
-        return result;
+        for (int i = 0; i < operatorStack.length(); i++) {
+            System.out.println("stackLength[" + i + "]=" + operatorStack.charAt(i));
+        }return result;
+
     }
 
-    public double operationData(double num1, char[] expression, char operator) {
-        String strNum = "";
+    private double operationData(double num1, char[] expression, char operator) {
         double num2 = 0;
-        for (; expressionArrayIndex < expression.length; ++expressionArrayIndex) {
-            System.out.println(expression[expressionArrayIndex]);
-//            System.out.println(operator);
-            if (isNumber(expression[expressionArrayIndex])) {
-                strNum += expression[expressionArrayIndex];
+
+        while (expressionIndex < expressionLength) {
+            if (isNumber(expression[expressionIndex])) {
+                num2 = returnNumber(expressionLength, expressionIndex); //2번째 값 잘라냄.
+                 System.out.println("num2 = " + num2);
             } else {
-                System.out.println();
-                num2 = Double.valueOf(strNum);
+                char operator2 = expression[expressionIndex++];
                 if (operator == '+' || operator == '-') {
-                    operatorStack += expression[expressionArrayIndex];
+                    System.out.println("operator2 = " + operator2);
+                    operatorStack += operator2;
                     numStack.add(num1);
-                    operationData(num2, expression, expression[expressionArrayIndex]);
+                    num2 = operationData(num2, expression, operator2);
+
                     break;
-                } else {
-                    if (operator == '*') {
-                        num1 = mul(num1, num2);
-                    } else {
-                        num1 = div(num1, num2);
-                    }
-                    strNum = "";
+                } else if (operator == '*') {
+                    num1 = mul(num1, num2);
+                    expressionIndex++;
+                } else if (operator == '/') {
+                    num1 = div(num1, num2);
+                    expressionIndex++;
+                } else{
+                    break;
                 }
             }
         }
-        return 1.1;
+        return num1;
+    }
+
+    private double returnNumber(int strLength, int index) {
+        String numStr = "";
+        char numChar;
+        double result = 0;
+        while (index <= strLength) {
+            System.out.println(numStr);
+            numChar = expressionArray[index];
+            if (isNumber(numChar) || numChar == '.') {
+                numStr += expressionArray[index++];
+            } else break;
+        }
+        expressionIndex = index;
+        result = Double.valueOf(numStr);
+        System.out.println(result);
+        return result;
+    }
+
+    private boolean dataErrorCheck(char chr) {
+        if (chr == '+' || chr == '-' || chr == '*' || chr == '/')
+            return true;
+        else return false;
     }
 
     public boolean isNumber(char data) {
