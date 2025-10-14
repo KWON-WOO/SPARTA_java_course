@@ -45,13 +45,13 @@ public class Main {
 ////        System.out.println(calculator.sum(num1++,11340));
 //        System.out.println(calculator.calculate("28+33*311"));
     }
-    public interface level1Calculator{
+    public static void level1Calculator(){
 
     }
-    public interface level2Calculator{
+    public static void level2Calculator(){
 
     }
-    public interface level3Calculator{
+    public static void level3Calculator(){
 
     }
 }
