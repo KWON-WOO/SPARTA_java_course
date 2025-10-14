@@ -121,5 +121,4 @@ public class Calculator {
             resultList[resultListIndex--] = 0;
         }
     }
-
 }
