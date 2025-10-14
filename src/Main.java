@@ -65,15 +65,15 @@ public class Main {
         char operator;
         boolean checkExit;
         checkExit = true;
-        do {
+        do {                //반복 실행을 위한 반복문. 1회는 실행해야하기에 do-while문 이용.
             Scanner scanner = new Scanner(System.in);
             System.out.print("첫번째 정수 입력(끝내고 싶을 시 exit 입력) ->");
-            num1Str = scanner.nextLine();
+            num1Str = scanner.nextLine();      //종료조건 검사도 병행하기 위해 String으로 값을 받아옴.
             System.out.println(num1Str);
             if (num1Str.equals("exit"))
-                checkExit = false;
+                checkExit = false;      //do-while문을 종료하기 위한 boolean.
             else {
-                num1 = Integer.parseInt(num1Str);
+                num1 = Integer.parseInt(num1Str);       //받아온 데이터 정수값으로 변환.
                 System.out.println("두번째 정수 입력 ->");
                 num2 = scanner.nextInt();
                 scanner.nextLine();
