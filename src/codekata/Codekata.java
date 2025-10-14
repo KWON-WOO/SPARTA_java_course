@@ -3,7 +3,7 @@ package codekata;
 import java.util.Scanner;
 
 public class Codekata {
-    public static void executeSolution() {
+    public void executeSolution() {
         int selectSolution;
         Scanner solutionSc = new Scanner(System.in);
         Scanner sc = new Scanner(System.in);
@@ -24,11 +24,11 @@ public class Codekata {
         } while (selectSolution != 0);
     }
 
-    public static int solution1(int num1, int num2) {   //두 수의 차 구하기
+    public int solution1(int num1, int num2) {   //두 수의 차 구하기
         return num1 - num2;
     }
 
-    public static int solution2(int num1, int num2) {   // 두 수의 곱 구하기
+    public int solution2(int num1, int num2) {   // 두 수의 곱 구하기
         return num1 * num2;
     }
 }
