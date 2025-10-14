@@ -1,4 +1,6 @@
+import chapter1.Calculator;
 import chapter1.MyCalculator;
+import codekata.Codekata;
 
 import java.util.Scanner;
 
@@ -14,6 +16,7 @@ public class Main {
         int select_calculator;
         while (checkContinue) {
             System.out.print("사용할 계산기 선택.\n" +
+                    "0. 코드카타\n" +
                     "1. Level1\n" +
                     "2. Level2\n" +
                     "3. Level3\n" +
@@ -30,6 +33,9 @@ public class Main {
                 select_calculator = numCheck.charAt(0) - '0';
                 System.out.println(select_calculator);
                 switch (select_calculator) {
+                    case 0:
+                        new Codekata().executeSolution();
+                        break;
                     case 1:
                         level1Calculator();
                         break;
@@ -106,7 +112,11 @@ public class Main {
     }
 
     public static void level2Calculator() {
-        System.out.println("미완성");
+        Calculator cal = new Calculator();
+        boolean loop = true;
+        while (loop) {
+            loop = cal.excute();
+        }
     }
 
     public static void level3Calculator() {
