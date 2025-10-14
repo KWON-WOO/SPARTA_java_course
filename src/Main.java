@@ -12,25 +12,36 @@ public class Main {
         String numCheck;
         boolean checkContinue = true;
         int select_calculator;
-        while(checkContinue){
-            System.out.println("사용할 계산기 선택.\n" +
+        while (checkContinue) {
+            System.out.print("사용할 계산기 선택.\n" +
                     "1. Level1\n" +
                     "2. Level2\n" +
                     "3. Level3\n" +
-                    "4. (이후 추가 예정. 아직 미완성)" +
-                    "exit. 종료.");
+                    "4. (이후 추가 예정. 아직 미완성)\n" +
+                    "exit. 종료.\n" +
+                    "->");
             numCheck = scanner.nextLine();
-            if (numCheck.length() > 1 ||
+            if (numCheck.equals("exit")) {
+                checkContinue = false;
+            }else if (numCheck.length() > 1 ||
                     !(numCheck.charAt(0) >= '1' && numCheck.charAt(0) <= '3')) {
                 System.out.println("잘못된 입력값입니다.");
-            } else if (numCheck.equals("exit")) {
-                checkContinue = false;
-            }else {
+            } else {
                 select_calculator = numCheck.charAt(0) - '0';
+                System.out.println(select_calculator);
                 switch (select_calculator) {
-                    case '1': level1Calculator(); break;
-                    case '2': level2Calculator(); break;
-                    case '3': level3Calculator(); break;
+                    case 1:
+                        level1Calculator();
+                        break;
+                    case 2:
+                        level2Calculator();
+                        break;
+                    case 3:
+                        level3Calculator();
+                        break;
+                    default:
+                        System.out.println("다시 입력해주세요.");
+
                 }
             }
         }
@@ -45,13 +56,60 @@ public class Main {
 ////        System.out.println(calculator.sum(num1++,11340));
 //        System.out.println(calculator.calculate("28+33*311"));
     }
-    public static void level1Calculator(){
 
+    public static void level1Calculator() {
+        int num1;
+        int num2;
+        String num1Str;
+        String operatorStr;
+        char operator;
+        boolean checkExit;
+        checkExit = true;
+        do {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("첫번째 정수 입력(끝내고 싶을 시 exit 입력) ->");
+            num1Str = scanner.nextLine();
+            System.out.println(num1Str);
+            if (num1Str.equals("exit"))
+                checkExit = false;
+            else {
+                num1 = Integer.parseInt(num1Str);
+                System.out.println("두번째 정수 입력 ->");
+                num2 = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
+                operatorStr = scanner.nextLine();
+                operator = operatorStr.charAt(0);
+                switch (operator) {
+                    case '+':
+                        System.out.println("결과값 ->" + (num1 + num2));
+                        break;
+                    case '-':
+                        System.out.println("결과값 ->" + (num1 - num2));
+                        break;
+                    case '*':
+                        System.out.println("결과값 ->" + (num1 * num2));
+                        break;
+                    case '/':
+                        if (num2 == 0) {
+                            System.out.println("2번째 입력값이 0입니다. 처음부터 다시 입력해주세요.");
+                        } else {
+                            System.out.println("결과값 ->" + (num1 / num2));
+                        }
+                        break;
+                    default:
+                        System.out.println("잘못된 값을 입력 받았습니다. 다시 입력해주세요");
+                        break;
+                }
+            }
+        } while (checkExit);
     }
-    public static void level2Calculator(){
 
+    public static void level2Calculator() {
+        System.out.println("미완성");
     }
-    public static void level3Calculator(){
 
+    public static void level3Calculator() {
+        System.out.println("미완성");
     }
 }
