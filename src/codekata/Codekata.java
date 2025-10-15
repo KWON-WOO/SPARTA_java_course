@@ -51,4 +51,7 @@ public class Codekata {
     public int solution6(int num1, int num2) {
         return num1 + num2;
     }
+    public int solution7(int num1, int num2) {
+        return num1*1000/num2;
+    }
 }
