@@ -24,6 +24,17 @@ public class Codekata {
                     break;
                 case 4:
                     System.out.println(solution4(sc.nextInt()));
+                    break;
+                case 5:
+                    System.out.println(solution5(sc.nextInt(), sc.nextInt()));
+                    break;
+                case 6:
+                    System.out.println(solution6(sc.nextInt(), sc.nextInt()));
+                    break;
+                case 7:
+                    System.out.println(solution7(sc.nextInt(), sc.nextInt()));
+                    break;
+
                 default:
             }
         } while (selectSolution != 0);
@@ -45,13 +56,16 @@ public class Codekata {
         int year = 2022;
         return (year + 1) - age;
     }
+
     public int solution5(int num1, int num2) {
-        return num1==num2?1:-1;
+        return num1 == num2 ? 1 : -1;
     }
+
     public int solution6(int num1, int num2) {
         return num1 + num2;
     }
+
     public int solution7(int num1, int num2) {
-        return num1*1000/num2;
+        return num1 * 1000 / num2;
     }
 }
