@@ -48,4 +48,7 @@ public class Codekata {
     public int solution5(int num1, int num2) {
         return num1==num2?1:-1;
     }
+    public int solution6(int num1, int num2) {
+        return num1 + num2;
+    }
 }
