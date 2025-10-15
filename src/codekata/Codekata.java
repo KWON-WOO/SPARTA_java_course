@@ -34,7 +34,11 @@ public class Codekata {
                 case 7:
                     System.out.println(solution7(sc.nextInt(), sc.nextInt()));
                     break;
-
+                case 8:
+                    System.out.println(solution8(sc.nextInt(), sc.nextInt()));
+                    break;
+                    case 218:
+                        solution218(sc.nextInt());
                 default:
             }
         } while (selectSolution != 0);
@@ -78,7 +82,7 @@ public class Codekata {
         int[][] field;      //배열크기는 농장 크기를, 값은 양배추 유무를 나타냄.
         int row;
         int col;
-        int count;          //남은 갯수
+        int count;          //지렁이 수
         int num;            //총 갯수
         int x;
         int y;
@@ -88,7 +92,7 @@ public class Codekata {
             row = sc.nextInt();
             col = sc.nextInt();
             num = sc.nextInt();
-            count = num;
+            count = 0;
             field = new int[row][col];
             point = new int[num][];
             for (int j = 0; j < row; j++) {
@@ -99,39 +103,68 @@ public class Codekata {
             for (int j = 0; j < num; j++) {
                 x = sc.nextInt();
                 y = sc.nextInt();
-                field[x][y] = 1;
-                point[j][0] = x;
-                point[j][1] = y;
+                field[y][x] = 1;
+                point[j] = new int[2];
+                point[j][0] = y;
+                point[j][1] = x;
             }
+            for (int j = 0; j < num; j++) {
+                if (field[point[j][0]][point[j][1]] == 1) {
+                    count++;
+                    solution218Seach(row, col, field, point[j]);
+                }
+            }
+            System.out.println(count);
         }
     }
 
-    public int solution218Seach(int row, int col, int[][] field, int[] point, int count) {
-            if (field[point[0]][point[1]] == 1) {
-                field[point[0]][point[1]] = 2;
-                count--;
-                if (point[0] != 0) {     //좌측 검사
-                    if (field[point[0] - 1][point[1]] == 1) {
-                        field[point[0] - 1][point[1]] = 2;
+    public void solution218Seach(int row, int col, int[][] field, int[] point) {
+        int visit[][] = {
+                {-1, 0},    //위 체크
+                {1, 0},     //아래 체크
+                {0, -1},    //왼쪽 체크
+                {0, 1}};    //오른쪽 체크
+        int searchX;
+        int searchY;
+        if (field[point[0]][point[1]] == 1) {
+            field[point[0]][point[1]] = 2;
+            for (int i = 0; i < 4; i++) {
+                searchY = point[0] + visit[i][0];
+                searchX = point[1] + visit[i][1];
+
+                if (searchX >= 0 && searchX < col && searchY >= 0 && searchY < row) {
+                    if (field[searchY][searchX] == 1) {
+                        field[searchY][searchX] = 2;
+                        solution218Seach(row, col, field, new int[]{searchY, searchX});
                     }
+
                 }
-                if (point[0] != row - 1) {     //우측 검사
-                    if (field[point[0] + 1][point[1]] == 1) {
-                        field[point[0] + 1][point[1]] = 2;
-                    }
-                }
-                if  (point[1] != 0) {    //상단 검사
-                    if (field[point[0]][point[1] - 1] == 1) {
-                        field[point[0]][point[1] - 1] = 2;
-                    }
-                }
-                if (point[1] != col - 1) {   //하단 검사
-                    if (field[point[0]][point[1] + 1] == 1) {
-                        field[point[0]][point[1] + 1] = 2;
-                    }
-                }
-            } //체크한 배추값 올려줌.
-        return count;
+            }
+        }
+//        if (field[point[0]][point[1]] == 1) {
+//            field[point[0]][point[1]] = 2;
+//            count--;
+//            if (point[0] != 0) {     //좌측 검사
+//                if (field[point[0] - 1][point[1]] == 1) {
+//                    field[point[0] - 1][point[1]] = 2;
+//                }
+//            }
+//            if (point[0] != row - 1) {     //우측 검사
+//                if (field[point[0] + 1][point[1]] == 1) {
+//                    field[point[0] + 1][point[1]] = 2;
+//                }
+//            }
+//            if (point[1] != 0) {    //상단 검사
+//                if (field[point[0]][point[1] - 1] == 1) {
+//                    field[point[0]][point[1] - 1] = 2;
+//                }
+//            }
+//            if (point[1] != col - 1) {   //하단 검사
+//                if (field[point[0]][point[1] + 1] == 1) {
+//                    field[point[0]][point[1] + 1] = 2;
+//                } //체크한 배추값 올려줌.
+//                return count;
+//            }
+//        }
     }
 }
-
