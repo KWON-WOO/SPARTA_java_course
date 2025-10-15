@@ -68,4 +68,70 @@ public class Codekata {
     public int solution7(int num1, int num2) {
         return num1 * 1000 / num2;
     }
+
+    public int solution8(int num1, int num2) {
+        return num1 * 1000 / num2;
+    }
+
+    public void solution218(int testCase) {
+        Scanner sc = new Scanner(System.in);
+        int[][] field;      //배열크기는 농장 크기를, 값은 양배추 유무를 나타냄.
+        int row;
+        int col;
+        int count;          //남은 갯수
+        int num;            //총 갯수
+        int x;
+        int y;
+        int[][] point;
+
+        for (int i = 0; i < testCase; i++) {
+            row = sc.nextInt();
+            col = sc.nextInt();
+            num = sc.nextInt();
+            count = num;
+            field = new int[row][col];
+            point = new int[num][];
+            for (int j = 0; j < row; j++) {
+                for (int k = 0; k < col; k++) {
+                    field[j][k] = 0;   //배추유무값 초기화. 찾아보니 Arrays.fill(field,0)으로도 대체 가능하다고 함.
+                }
+            }
+            for (int j = 0; j < num; j++) {
+                x = sc.nextInt();
+                y = sc.nextInt();
+                field[x][y] = 1;
+                point[j][0] = x;
+                point[j][1] = y;
+            }
+        }
+    }
+
+    public int solution218Seach(int row, int col, int[][] field, int[] point, int count) {
+            if (field[point[0]][point[1]] == 1) {
+                field[point[0]][point[1]] = 2;
+                count--;
+                if (point[0] != 0) {     //좌측 검사
+                    if (field[point[0] - 1][point[1]] == 1) {
+                        field[point[0] - 1][point[1]] = 2;
+                    }
+                }
+                if (point[0] != row - 1) {     //우측 검사
+                    if (field[point[0] + 1][point[1]] == 1) {
+                        field[point[0] + 1][point[1]] = 2;
+                    }
+                }
+                if  (point[1] != 0) {    //상단 검사
+                    if (field[point[0]][point[1] - 1] == 1) {
+                        field[point[0]][point[1] - 1] = 2;
+                    }
+                }
+                if (point[1] != col - 1) {   //하단 검사
+                    if (field[point[0]][point[1] + 1] == 1) {
+                        field[point[0]][point[1] + 1] = 2;
+                    }
+                }
+            } //체크한 배추값 올려줌.
+        return count;
+    }
 }
+
