@@ -19,6 +19,9 @@ public class Codekata {
                 case 2:
                     System.out.println(solution2(sc.nextInt(), sc.nextInt()));
                     break;
+                case 3:
+                    System.out.println(solution3(sc.nextInt(), sc.nextInt()));
+                    break;
                 default:
             }
         } while (selectSolution != 0);
@@ -30,5 +33,9 @@ public class Codekata {
 
     public int solution2(int num1, int num2) {   // 두 수의 곱 구하기
         return num1 * num2;
+    }
+
+    public int solution3(int num1, int num2) {
+        return num1 / num2;
     }
 }
