@@ -46,4 +46,8 @@ public class Codekata {
         int answer = (year + 1) - age;
         return answer;
     }
+    public int solution5(int num1, int num2) {
+        int answer = num1==num2?1:-1;
+        return answer;
+    }
 }
