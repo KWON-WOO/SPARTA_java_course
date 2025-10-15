@@ -37,8 +37,8 @@ public class Codekata {
                 case 8:
                     System.out.println(solution8(sc.nextInt(), sc.nextInt()));
                     break;
-                    case 218:
-                        solution218(sc.nextInt());
+                case 218:
+                    solution218(sc.nextInt());
                 default:
             }
         } while (selectSolution != 0);
@@ -75,6 +75,43 @@ public class Codekata {
 
     public int solution8(int num1, int num2) {
         return num1 * 1000 / num2;
+    }
+
+    public void solution185(int length) {
+        Scanner sc = new Scanner(System.in);
+        boolean errorFlag = true;
+        int top = -1;
+        int num = 1;
+        int[] stack = new int[length];
+        int[] inputNumber = new int[length];
+        String resultData = "";          //결과값 담는 문자열
+
+        for (int i = 0; i < length; i++) { //초기화 구문
+            inputNumber[i] = sc.nextInt();
+            stack[i] = 0;
+        }
+        for (int inputNum : inputNumber) {  //입력값 쪼개기
+            while (true) {                  //해당값 가져올 때까지 반복 push
+                if (inputNum >= num) {
+                    resultData += '+';
+                    stack[++top] = num++;
+                } else break;
+            }
+            if (inputNum == stack[top]) {   //입력값을 가져왔을 때 pop
+                resultData += '-';
+                stack[top--] = 0;
+            } else {
+                errorFlag = false;     //문제 조건과 일치하지 않으면 에러
+                break;
+            }
+        }
+        if (errorFlag) {
+            for (char result : resultData.toCharArray()) {
+                System.out.println(result);
+            }
+        } else {
+            System.out.println("NO");
+        }
     }
 
     public void solution218(int testCase) {
