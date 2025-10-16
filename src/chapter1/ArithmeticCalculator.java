@@ -20,7 +20,7 @@ public class ArithmeticCalculator<T extends Number> {
         Division("/"){
             @Override
             public Double apply(Double number1, Double number2) {
-                if (number1 == 0 || number2 == 0) {
+                if (number2 == 0) {
                     throw new ArithmeticException();
                 }
                 return number1 / number2;
@@ -79,7 +79,7 @@ public class ArithmeticCalculator<T extends Number> {
         resultList = new ArrayList<>();
     }
 
-    public Double execute(T num1, T num2, String operator, String select) {
+    public void execute(String select) {
         Scanner sc = new Scanner(System.in);
         switch (select) {
             case "get":
@@ -99,15 +99,6 @@ public class ArithmeticCalculator<T extends Number> {
                 getLargerThanInput(sc.nextDouble());
                 break;
         }
-        Double result;
-        result = calculate(num1, num2, operator);
-        if (result != null) {
-            System.out.println("결과값 ->" + result);
-            resultList.add(result);
-        } else {
-            System.out.println("잘못된 값을 입력 받았습니다. 다시 입력해주세요");
-        }
-        return result;
     }
 
     public Double calculate(T number1, T number2, String operator) { //실제로 연산에 들어가는 메서드.
@@ -124,6 +115,12 @@ public class ArithmeticCalculator<T extends Number> {
                 break;
             }
         }
+        if (result != null) {
+            System.out.println("결과값 ->" + result);
+            resultList.add(result);
+        } else {
+            System.out.println("잘못된 값을 입력 받았습니다. 다시 입력해주세요");
+        }
         return result;
     }
 
@@ -135,7 +132,7 @@ public class ArithmeticCalculator<T extends Number> {
     }
 
     public void getResultList() {
-        AtomicInteger i = new AtomicInteger(1);
+        AtomicInteger i = new AtomicInteger(0);
         System.out.println("결과값");
         resultList.stream()
                 .forEach(item -> System.out.println( i.incrementAndGet() + ". " + item));
@@ -146,19 +143,19 @@ public class ArithmeticCalculator<T extends Number> {
 
     public void setResultList(int index, Double result) {
         getResultList();
-        while (true) {
             System.out.println("수정할 인덱스->");
-            if (index >= resultList.size())
+            if (index >= resultList.size()) {
                 System.out.println("인덱스값이 잘못됨");
-            else
-                break;
-        }
-        System.out.println("수정할 값->");
+                return;
+            }
         resultList.set(index, result);
         System.out.println("수정완료됨");
     }
 
     public void removeResult() {
+        if  (resultList.isEmpty()) {
+            System.out.println("리스트값이 없음");
+        }
         resultList.remove(0);
     }
 }
