@@ -137,7 +137,7 @@ public class Main {
                 num2 = sc.nextDouble();
                 System.out.println("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
                 sc.nextLine();
-                System.out.println(calc.execute(num1, num2, scStr.nextLine(), selectMenu));
+                calc.execute(num1, num2, scStr.nextLine(), selectMenu);
                 System.out.println("exit. 종료\n" +
                         "get. 조회\n" +
                         "set. 수정\n" +
