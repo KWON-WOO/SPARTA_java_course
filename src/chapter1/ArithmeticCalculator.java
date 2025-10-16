@@ -79,7 +79,7 @@ public class ArithmeticCalculator<T extends Number> {
         resultList = new ArrayList<>();
     }
 
-    public void execute(String select) {
+    public boolean execute(String select) {
         Scanner sc = new Scanner(System.in);
         switch (select) {
             case "get":
@@ -88,6 +88,10 @@ public class ArithmeticCalculator<T extends Number> {
             case "set":
                 System.out.println("수정할 인덱스값을 입력하십쇼.->");
                 int index1 = sc.nextInt();
+                if (index1 >= resultList.size()) {
+                    System.out.println("인덱스값이 잘못됨");
+                    break;
+                }
                 System.out.println("수정할 값 입력해주십쇼.->");
                 setResultList(index1, sc.nextDouble());
                 break;
@@ -98,7 +102,11 @@ public class ArithmeticCalculator<T extends Number> {
                 System.out.println("기준값을 입력해주세요.->");
                 getLargerThanInput(sc.nextDouble());
                 break;
+            default:
+                return false;
         }
+        System.out.println("\n");
+        return true;
     }
 
     public Double calculate(T number1, T number2, String operator) { //실제로 연산에 들어가는 메서드.
@@ -143,11 +151,6 @@ public class ArithmeticCalculator<T extends Number> {
 
     public void setResultList(int index, Double result) {
         getResultList();
-            System.out.println("수정할 인덱스->");
-            if (index >= resultList.size()) {
-                System.out.println("인덱스값이 잘못됨");
-                return;
-            }
         resultList.set(index, result);
         System.out.println("수정완료됨");
     }

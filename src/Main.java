@@ -125,6 +125,7 @@ public class Main {
         double num1;
         double num2;
         boolean exitFlag = true;
+        boolean exitMenuFlag;
         String selectMenu = "";
         Scanner sc = new Scanner(System.in);
         Scanner scOp =  new Scanner(System.in);
@@ -132,19 +133,25 @@ public class Main {
 
         while(exitFlag) {
             try {
+                exitMenuFlag = true;
                 System.out.println("첫번째 수 입력->");
                 num1 = sc.nextDouble();
                 System.out.println("두번째 수 입력->");
                 num2 = sc.nextDouble();
                 System.out.println("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
                 calc.calculate(num1, num2, scOp.nextLine());
-                System.out.println("exit. 종료\n" +
-                        "get. 조회\n" +
-                        "set. 수정\n" +
-                        "remove. 삭제\n" +
-                        "select. 선택값보다 큰 값 조회\n" +
-                        "계속하시려면 아무 값이나 입력.");
-                calc.execute(scStr.nextLine().trim());
+                while(exitMenuFlag) {
+                    System.out.println("exit. 종료\n" +
+                            "get. 조회\n" +
+                            "set. 수정\n" +
+                            "remove. 삭제\n" +
+                            "select. 선택값보다 큰 값 조회\n" +
+                            "계속하시려면 아무 값이나 입력.");
+                    selectMenu = scStr.nextLine().trim();
+                    if (selectMenu.equals("exit"))
+                        break;
+                    exitMenuFlag = calc.execute(selectMenu);
+                }
             }catch (InputMismatchException e) {
                 System.out.println("입력값이 잘못되었습니다. 다시 입력해주세용");
                 sc = new Scanner(System.in);
