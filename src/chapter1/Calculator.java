@@ -15,7 +15,7 @@ public class Calculator {
 //        resultListIndex = -1;   //이후 배열에 추가할 때 [++index]방식을 이용하기 위해 초기값을 -1로 설정
     }
 
-    public boolean excute() {
+    public boolean execute() {
         Scanner sc = new Scanner(System.in);
         boolean loopContinue = true;
         int num1;
@@ -34,10 +34,10 @@ public class Calculator {
             if (resultList.size() != 0)
                 setResultList();
         } else if (num1Str.equals("remove")) {
-            if (resultList.size() != -1)
+            if (resultList.size() != 0)
                 removeResult();
         } else if (num1Str.equals("get")) {
-            if (resultList.size() != -1)
+            if (resultList.size() != 0)
                 getResultList();
         }
         else {

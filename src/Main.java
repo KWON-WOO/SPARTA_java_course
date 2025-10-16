@@ -1,7 +1,8 @@
+import chapter1.ArithmeticCalculator;
 import chapter1.Calculator;
-import chapter1.MyCalculator;
 import codekata.Codekata;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 //TIP 코드를 <b>실행</b>하려면 <shortcut actionId="Run"/>을(를) 누르거나
@@ -26,7 +27,7 @@ public class Main {
             numCheck = scanner.nextLine();
             if (numCheck.equals("exit")) {
                 checkContinue = false;
-            }else if (numCheck.length() > 1 ||
+            } else if (numCheck.length() > 1 ||
                     !(numCheck.charAt(0) >= '1' && numCheck.charAt(0) <= '3')) {
                 System.out.println("잘못된 입력값입니다.");
             } else {
@@ -115,11 +116,42 @@ public class Main {
         Calculator cal = new Calculator();
         boolean loop = true;
         while (loop) {
-            loop = cal.excute();
+            loop = cal.execute();
         }
     }
 
     public static void level3Calculator() {
-        System.out.println("미완성");
+        ArithmeticCalculator<Double> calc = new ArithmeticCalculator<Double>();
+        double num1;
+        double num2;
+        String operator = "";
+        String selectMenu = "";
+        Scanner sc = new Scanner(System.in);
+        Scanner scStr = new Scanner(System.in);
+
+        while(true) {
+            try {
+                System.out.println("첫번째 수 입력->");
+                num1 = sc.nextDouble();
+                System.out.println("두번째 수 입력->");
+                num2 = sc.nextDouble();
+                System.out.println("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
+                sc.nextLine();
+                operator = scStr.nextLine();
+                System.out.println(calc.execute(num1, num2, operator, selectMenu));
+                System.out.println("exit. 종료\n" +
+                        "get. 조회\n" +
+                        "set. 수정\n" +
+                        "remove. 삭제\n" +
+                        "select. 선택값보다 큰 값 조회\n" +
+                        "계속하시려면 아무 값이나 입력.");
+                selectMenu = sc.nextLine();
+            }catch (InputMismatchException e) {
+                System.out.println("입력값이 잘못되었습니다. 다시 입력해주세용");
+                sc = new Scanner(System.in);
+            }
+            if (selectMenu.equals("exit"))
+                break;
+        }
     }
 }
