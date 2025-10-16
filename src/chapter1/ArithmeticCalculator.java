@@ -76,7 +76,6 @@ public class ArithmeticCalculator<T extends Number> {
     }
 
     public ArithmeticCalculator() {
-        errorCheck = true;
         resultList = new ArrayList<>();
     }
 
