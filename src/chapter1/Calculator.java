@@ -1,16 +1,18 @@
 package chapter1;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Calculator {
-    private int[] resultList;   //강의에 나온 배열 사용하여 결과값 저장.
+    private List<Integer> resultList;   //강의에 나온 배열 사용하여 결과값 저장.
     private boolean errorCheck; //비정상적인 값이 들어올 때 출력과 리스트추가를 막기 위한 변수
-    private int resultListIndex;
+//    private int resultListIndex;          //컬렉션 타입을 이용하면서 불필요해짐.
 
     public Calculator() {
-        resultList = new int[100];  //넉넉하게 100개로 설정.
+        resultList = new ArrayList<Integer>();  //조건에 맞게 수정.
         errorCheck = true;
-        resultListIndex = -1;   //이후 배열에 추가할 때 [++index]방식을 이용하기 위해 초기값을 -1로 설정
+//        resultListIndex = -1;   //이후 배열에 추가할 때 [++index]방식을 이용하기 위해 초기값을 -1로 설정
     }
 
     public boolean excute() {
@@ -29,13 +31,13 @@ public class Calculator {
         if (num1Str.equals("exit")) {
             loopContinue = false;
         } else if (num1Str.equals("set")) {
-            if (resultListIndex != -1)
+            if (resultList.size() != 0)
                 setResultList();
         } else if (num1Str.equals("remove")) {
-            if (resultListIndex != -1)
+            if (resultList.size() != -1)
                 removeResult();
         } else if (num1Str.equals("get")) {
-            if (resultListIndex != -1)
+            if (resultList.size() != -1)
                 getResultList();
         }
         else {
@@ -49,7 +51,7 @@ public class Calculator {
             result = calculate(num1, num2, operator);
             if (errorCheck) {
                 System.out.println("결과값 ->" + result);
-                resultList[++resultListIndex] = result;
+                resultList.add(result);
             } else {
                 System.out.println("잘못된 값을 입력 받았습니다. 다시 입력해주세요");
             }
@@ -86,8 +88,8 @@ public class Calculator {
 
     public void getResultList() {
         System.out.println("결과값");
-        for (int i = 0; i <= resultListIndex; i++) {
-            System.out.println(i + ". " + resultList[i]);
+        for (int i = 0; i <= resultList.size(); i++) {
+            System.out.println(i + ". " + resultList.get(i));
         }
     }
 
@@ -99,26 +101,27 @@ public class Calculator {
         while (true) {
             System.out.println("수정할 인덱스->");
             index = sc.nextInt();
-            if (index > resultListIndex)
+            if (index >= resultList.size())
                 System.out.println("인덱스값이 잘못됨");
             else
                 break;
         }
         System.out.println("수정할 값->");
         result = sc.nextInt();
-        resultList[index] = result;
+        resultList.set(index, result);
         System.out.println("수정완료됨");
     }
 
     public void removeResult() {
-        int result;
-        if (resultListIndex > 0) {
-            for (int i = 0; i < resultListIndex; i++) {
-                resultList[i] = resultList[i + 1];
-            }
-            resultList[resultListIndex--] = 0;
-        } else{
-            resultList[resultListIndex--] = 0;
-        }
+        resultList.remove(0);
+//        int result;           //조건에 맞게 수정함.
+//        if (resultListIndex > 0) {
+//            for (int i = 0; i < resultListIndex; i++) {
+//                resultList[i] = resultList[i + 1];
+//            }
+//            resultList[resultListIndex--] = 0;
+//        } else{
+//            resultList[resultListIndex--] = 0;
+//        }
     }
 }
