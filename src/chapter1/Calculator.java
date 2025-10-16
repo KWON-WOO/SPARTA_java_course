@@ -28,33 +28,36 @@ public class Calculator {
         System.out.print("첫번째 숫자 입력 또는 get, set, remove 입력\n" +
                 "(입력을 제외한 나머지는 저장값이 있을 때만 동작)->");
         num1Str = sc.nextLine();
-        if (num1Str.equals("exit")) {
-            loopContinue = false;
-        } else if (num1Str.equals("set")) {
-            if (resultList.size() != 0)
-                setResultList();
-        } else if (num1Str.equals("remove")) {
-            if (resultList.size() != 0)
-                removeResult();
-        } else if (num1Str.equals("get")) {
-            if (resultList.size() != 0)
-                getResultList();
-        }
-        else {
-            num1 = Integer.parseInt(num1Str);
-            System.out.print("두번째 숫자 입력->");
-            num2 = sc.nextInt();
-            sc.nextLine();
-            System.out.println("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
-            operatorStr = sc.nextLine();
-            operator = operatorStr.charAt(0);
-            result = calculate(num1, num2, operator);
-            if (errorCheck) {
-                System.out.println("결과값 ->" + result);
-                resultList.add(result);
-            } else {
-                System.out.println("잘못된 값을 입력 받았습니다. 다시 입력해주세요");
-            }
+
+        switch (num1Str) {
+            case "get":
+                if (!resultList.isEmpty())
+                    getResultList();
+                break;
+            case "set":
+                if (!resultList.isEmpty())
+                    setResultList();
+                break;
+            case "remove":
+                if (!resultList.isEmpty())
+                    removeResult();
+                break;
+
+            default:
+                num1 = Integer.parseInt(num1Str);
+                System.out.print("두번째 숫자 입력->");
+                num2 = sc.nextInt();
+                sc.nextLine();
+                System.out.println("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
+                operatorStr = sc.nextLine();
+                operator = operatorStr.charAt(0);
+                result = calculate(num1, num2, operator);
+                if (errorCheck) {
+                    System.out.println("결과값 ->" + result);
+                    resultList.add(result);
+                } else {
+                    System.out.println("잘못된 값을 입력 받았습니다. 다시 입력해주세요");
+                }
         }
         return loopContinue;
     }
