@@ -121,15 +121,15 @@ public class Main {
     }
 
     public static void level3Calculator() {
-        ArithmeticCalculator<Double> calc = new ArithmeticCalculator<Double>();
+        ArithmeticCalculator<Double> calc = new ArithmeticCalculator<>();
         double num1;
         double num2;
-        String operator = "";
+        boolean exitFlag = true;
         String selectMenu = "";
         Scanner sc = new Scanner(System.in);
         Scanner scStr = new Scanner(System.in);
 
-        while(true) {
+        while(exitFlag) {
             try {
                 System.out.println("첫번째 수 입력->");
                 num1 = sc.nextDouble();
@@ -137,8 +137,7 @@ public class Main {
                 num2 = sc.nextDouble();
                 System.out.println("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
                 sc.nextLine();
-                operator = scStr.nextLine();
-                System.out.println(calc.execute(num1, num2, operator, selectMenu));
+                System.out.println(calc.execute(num1, num2, scStr.nextLine(), selectMenu));
                 System.out.println("exit. 종료\n" +
                         "get. 조회\n" +
                         "set. 수정\n" +
@@ -151,7 +150,7 @@ public class Main {
                 sc = new Scanner(System.in);
             }
             if (selectMenu.equals("exit"))
-                break;
+                exitFlag = false;
         }
     }
 }
