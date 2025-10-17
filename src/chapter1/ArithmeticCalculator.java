@@ -14,10 +14,10 @@ public class ArithmeticCalculator<T extends Number> {
          * 람다버전. values()로 조건검사
          * 혹은 오퍼레이터를 직접 지정해서 apply로 실행.
          */
-        Addition("+", (num1, num2) -> num1 + num2),
-        Subtraction("-", (num1, num2) -> num1 - num2),
-        Multiplication("*", (num1, num2) -> num1 * num2),
-        Division("/"){
+        ADDITION("+", (num1, num2) -> num1 + num2),
+        SUBTRACTION("-", (num1, num2) -> num1 - num2),
+        MULTIPLICATION("*", (num1, num2) -> num1 * num2),
+        DIVISION("/"){
             @Override
             public Double apply(Double number1, Double number2) {
                 if (number2 == 0) {
@@ -79,6 +79,13 @@ public class ArithmeticCalculator<T extends Number> {
         resultList = new ArrayList<>();
     }
 
+    /**
+     * 함수 실행 부분. 해당 객체에서 저장하고 있는 결과값을 다룰 수 있는 함수.
+     * 결과값을 가져오는 get, 수정하는 set, 삭제하는 remove,
+     * 선택값보다 큰 값을 가져오는 select로 구분.
+     * @param select
+     * @return
+     */
     public boolean execute(String select) {
         Scanner sc = new Scanner(System.in);
         switch (select) {
@@ -109,6 +116,14 @@ public class ArithmeticCalculator<T extends Number> {
         return true;
     }
 
+    /**
+     * 실제로 연산을 수행하는 함수. 연산은 Operation에서 하고 예외처리만 해준다.
+     * 연산자가 잘못 입력되었거나 0을 나누는 등 결과값을 리스트에 추가하지 않고 별도의 문구를 출력한다.
+     * @param number1 피연산자(operand)를 받아오는 변수
+     * @param number2 피연산자(operand)를 받아오는 함수
+     * @param operator 연산자를 가져오는 함수.
+     * @return
+     */
     public Double calculate(T number1, T number2, String operator) { //실제로 연산에 들어가는 메서드.
         double num1 = number1.doubleValue();
         double num2 = number2.doubleValue();
@@ -132,6 +147,10 @@ public class ArithmeticCalculator<T extends Number> {
         return result;
     }
 
+    /**
+     * 함수명에서 알 수 있듯이 기입한 값보다 높은 값들을 출력해주는 함수.
+     * @param num 출력할 값들의 기준값을 설정해주는 매개변수.
+     */
     public void getLargerThanInput(Double num) {
         AtomicInteger i = new AtomicInteger(1);
         resultList.stream()
@@ -139,6 +158,11 @@ public class ArithmeticCalculator<T extends Number> {
                 .forEach(item -> System.out.println( i.incrementAndGet() + ". " + item));
     }
 
+    /**
+     * getter 함수.
+     * 결과값이 담기는 resultList의 List를 출력해주는 함수.
+     * 별도의 매개변수를 필요로 하지 않고 반환값 없이 콘솔에서만 출력한다.
+     */
     public void getResultList() {
         AtomicInteger i = new AtomicInteger(0);
         System.out.println("결과값");
@@ -149,12 +173,24 @@ public class ArithmeticCalculator<T extends Number> {
 //        }
     }
 
+    /**
+     * 결과값이 담기는 setResultList의 값을 수정하는 함수.
+     * 수정을 위해 수정할 결과값이 들어있는 인덱스와 수정할 값을 받아온다.
+     *
+     * @param index  수정할 결과값의 인덱스가 들어가는 부분.
+     * @param result    실제로 수정할 값을 기입.
+     */
     public void setResultList(int index, Double result) {
         getResultList();
         resultList.set(index, result);
         System.out.println("수정완료됨");
     }
 
+    /**
+     * 결과값을 지워주는 함수.
+     * 결과값이 담기는 resultList가 비어있다면 별도의 출력문을 콘솔에 출력해줌.
+     * 무조건 제일 먼저 들어온 값을 지우도록 설계함.
+     */
     public void removeResult() {
         if  (resultList.isEmpty()) {
             System.out.println("리스트값이 없음");

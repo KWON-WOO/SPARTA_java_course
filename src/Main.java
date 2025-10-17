@@ -17,11 +17,11 @@ public class Main {
         int select_calculator;
         while (checkContinue) {
             System.out.print("사용할 계산기 선택.\n" +
-                    "0. 코드카타\n" +
+//                    "0. 코드카타\n" +
                     "1. Level1\n" +
                     "2. Level2\n" +
                     "3. Level3\n" +
-                    "4. (이후 추가 예정. 아직 미완성)\n" +
+//                    "4. (이후 추가 예정. 아직 미완성)\n" +
                     "exit. 종료.\n" +
                     "->");
             numCheck = scanner.nextLine();
@@ -34,9 +34,9 @@ public class Main {
                 select_calculator = numCheck.charAt(0) - '0';
 //                System.out.println(select_calculator);
                 switch (select_calculator) {
-                    case 0:
-                        new Codekata().executeSolution();
-                        break;
+//                    case 0:
+//                        new Codekata().executeSolution();
+//                        break;
                     case 1:
                         level1Calculator();
                         break;
@@ -48,7 +48,6 @@ public class Main {
                         break;
                     default:
                         System.out.println("다시 입력해주세요.");
-
                 }
             }
         }

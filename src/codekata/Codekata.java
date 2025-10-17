@@ -148,14 +148,14 @@ public class Codekata {
             for (int j = 0; j < num; j++) {
                 if (field[point[j][0]][point[j][1]] == 1) {
                     count++;
-                    solution218Seach(row, col, field, point[j]);
+                    solution218Search(row, col, field, point[j]);
                 }
             }
             System.out.println(count);
         }
     }
 
-    public void solution218Seach(int row, int col, int[][] field, int[] point) {
+    public void solution218Search(int row, int col, int[][] field, int[] point) {
         int visit[][] = {
                 {-1, 0},    //위 체크
                 {1, 0},     //아래 체크
@@ -172,9 +172,8 @@ public class Codekata {
                 if (searchX >= 0 && searchX < col && searchY >= 0 && searchY < row) {
                     if (field[searchY][searchX] == 1) {
                         field[searchY][searchX] = 2;
-                        solution218Seach(row, col, field, new int[]{searchY, searchX});
+                        solution218Search(row, col, field, new int[]{searchY, searchX});
                     }
-
                 }
             }
         }
