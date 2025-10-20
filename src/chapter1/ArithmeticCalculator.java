@@ -93,6 +93,7 @@ public class ArithmeticCalculator<T extends Number> {
                 getResultList();
                 break;
             case "set":
+                getResultList();
                 System.out.println("수정할 인덱스값을 입력하십쇼.->");
                 int index1 = sc.nextInt();
                 if (index1 >= resultList.size()) {
@@ -106,12 +107,14 @@ public class ArithmeticCalculator<T extends Number> {
                 removeResult();
                 break;
             case "select":
+                getResultList();
                 System.out.println("기준값을 입력해주세요.->");
                 getLargerThanInput(sc.nextDouble());
                 break;
             default:
                 return false;
         }
+
         System.out.println("\n");
         return true;
     }
@@ -128,6 +131,7 @@ public class ArithmeticCalculator<T extends Number> {
         double num1 = number1.doubleValue();
         double num2 = number2.doubleValue();
         Double result = null;
+        Scanner sc = new Scanner(System.in);
         for (Operation enumOperator : Operation.values()) {
             if (enumOperator.getSymbol().equals(operator)) {
                 try{
@@ -152,7 +156,7 @@ public class ArithmeticCalculator<T extends Number> {
      * @param num 출력할 값들의 기준값을 설정해주는 매개변수.
      */
     public void getLargerThanInput(Double num) {
-        AtomicInteger i = new AtomicInteger(1);
+        AtomicInteger i = new AtomicInteger(-1);
         resultList.stream()
                 .filter(item -> item > num.doubleValue())
                 .forEach(item -> System.out.println( i.incrementAndGet() + ". " + item));
@@ -164,7 +168,11 @@ public class ArithmeticCalculator<T extends Number> {
      * 별도의 매개변수를 필요로 하지 않고 반환값 없이 콘솔에서만 출력한다.
      */
     public void getResultList() {
-        AtomicInteger i = new AtomicInteger(0);
+//        AtomicInteger i = new AtomicInteger(0);
+//        System.out.println("결과값");
+//        resultList.stream()
+//                .forEach(item -> System.out.println( i.incrementAndGet() + ". " + item));
+        StreamIndex i = new StreamIndex(0);
         System.out.println("결과값");
         resultList.stream()
                 .forEach(item -> System.out.println( i.incrementAndGet() + ". " + item));
@@ -181,7 +189,6 @@ public class ArithmeticCalculator<T extends Number> {
      * @param result    실제로 수정할 값을 기입.
      */
     public void setResultList(int index, Double result) {
-        getResultList();
         resultList.set(index, result);
         System.out.println("수정완료됨");
     }
@@ -194,7 +201,10 @@ public class ArithmeticCalculator<T extends Number> {
     public void removeResult() {
         if  (resultList.isEmpty()) {
             System.out.println("리스트값이 없음");
+        } else {
+            resultList.remove(0);
+            getResultList();
         }
-        resultList.remove(0);
     }
 }
+

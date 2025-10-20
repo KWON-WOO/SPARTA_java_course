@@ -133,19 +133,23 @@ public class Main {
         while(exitFlag) {
             try {
                 exitMenuFlag = true;
-                System.out.println("첫번째 수 입력->");
+                System.out.print("첫번째 수 입력->");
                 num1 = sc.nextDouble();
-                System.out.println("두번째 수 입력->");
+                System.out.print("두번째 수 입력->");
                 num2 = sc.nextDouble();
-                System.out.println("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
+                System.out.print("사칙연산 기호 입력(+,-,*,/ 이 4개만 입력) ->");
                 calc.calculate(num1, num2, scOp.nextLine());
+
                 while(exitMenuFlag) {
+                    System.out.print("다음으로 넘어가시려면 아무 키나 입력해주세요.");
+                    scStr.nextLine();
+                    System.out.println("\n\n\n\n");
                     System.out.println("exit. 종료\n" +
                             "get. 조회\n" +
                             "set. 수정\n" +
                             "remove. 삭제\n" +
                             "select. 선택값보다 큰 값 조회\n" +
-                            "계속하시려면 아무 값이나 입력.");
+                            "계산을 계속하시려면 아무 값이나 입력.");
                     selectMenu = scStr.nextLine().trim();
                     if (selectMenu.equals("exit"))
                         break;
