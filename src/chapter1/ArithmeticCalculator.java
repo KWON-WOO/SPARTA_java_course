@@ -156,10 +156,14 @@ public class ArithmeticCalculator<T extends Number> {
      * @param num 출력할 값들의 기준값을 설정해주는 매개변수.
      */
     public void getLargerThanInput(Double num) {
-        AtomicInteger i = new AtomicInteger(-1);
+//        int i = 0;
+        StreamIndex i = new StreamIndex(-1);
         resultList.stream()
                 .filter(item -> item > num.doubleValue())
-                .forEach(item -> System.out.println( i.incrementAndGet() + ". " + item));
+                .forEach(item -> System.out.println(i.incrementAndGet() + ". " + item));
+//        resultList.stream()
+//                .filter(item -> item > num.doubleValue())
+//                .forEach(item -> System.out.println(i++ + ". " + item));
     }
 
     /**
@@ -168,10 +172,6 @@ public class ArithmeticCalculator<T extends Number> {
      * 별도의 매개변수를 필요로 하지 않고 반환값 없이 콘솔에서만 출력한다.
      */
     public void getResultList() {
-//        AtomicInteger i = new AtomicInteger(0);
-//        System.out.println("결과값");
-//        resultList.stream()
-//                .forEach(item -> System.out.println( i.incrementAndGet() + ". " + item));
         StreamIndex i = new StreamIndex(0);
         System.out.println("결과값");
         resultList.stream()
@@ -207,4 +207,3 @@ public class ArithmeticCalculator<T extends Number> {
         }
     }
 }
-
