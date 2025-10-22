@@ -21,7 +21,6 @@ public class Chapter1Main {
         Scanner scanner = new Scanner(System.in);
         String numCheck;
         boolean checkContinue = true;
-        int select_calculator;
         while (checkContinue) {
             System.out.print("사용할 계산기 선택.\n" +
 //                    "0. 코드카타\n" +
@@ -39,7 +38,6 @@ public class Chapter1Main {
                 System.out.println("잘못된 입력값입니다.");
             } else {
                 select_calculator = numCheck.charAt(0) - '0';
-//                System.out.println(select_calculator);
                 switch (select_calculator) {
 //                    case 0:
 //                        new Codekata().executeSolution();
