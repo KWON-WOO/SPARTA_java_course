@@ -28,7 +28,7 @@ public class Main {
 
                 break;
             default:
-                "입력값이 잘못되었습니다"
+                System.out.println("입력값이 잘못되었습니다");
 
         }
     }
