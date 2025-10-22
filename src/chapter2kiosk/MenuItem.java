@@ -7,22 +7,21 @@ public class MenuItem {
 
     MenuItem(){
     }
-
     MenuItem(String name, double price, String comment){
         this.name = name;
         this.price = price;
         this.comment = comment;
     }
 
-    public String getItemName(){
+    public String getName(){
         return this.name;
     }
 
-    public double getItemPrice(){
+    public double getPrice(){
         return this.price;
     }
 
-    public String getItemComment(){
+    public String getComment(){
         return this.comment;
     }
 }

@@ -14,9 +14,10 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int selectChapter;
         System.out.print(
-                "1. 계산기\n" +
-                        "2. 키오스크\n" +
-                        "챕터를 선택해주세요.->");
+                """
+                        1. 계산기
+                        2. 키오스크
+                        챕터를 선택해주세요.->""");
         selectChapter = sc.nextInt();
         switch (selectChapter) {
             case 1:

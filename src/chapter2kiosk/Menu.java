@@ -8,7 +8,7 @@ public class Menu {
     private List<MenuItem> menuItems;
 
     Menu(){
-        this.menuItems = new ArrayList<MenuItem>();
+        this.menuItems = new ArrayList<>();
         this.menuItems.add(new MenuItem("PineappleBurger", 8.9, "패티와 파인애플의 절묘한 만남!"));
         this.menuItems.add(new MenuItem("DurianBurger", 9.9, "버거와 두리안의 끔찍한 만남!"));
         this.menuItems.add(new MenuItem("KiwiBurger", 8.8, "파인애플 들어간 올라간 패티도 맛있는데 키위라고 맛 없겠어?"));
@@ -21,10 +21,8 @@ public class Menu {
      */
     public void showMenuList(){
         AtomicInteger i = new AtomicInteger(0);
-        this.menuItems.forEach(menuItem -> {
-            System.out.println(i.incrementAndGet()+ ". " + menuItem.getItemName()+
-                    "\t| W " + menuItem.getItemPrice() + " | "  + menuItem.getItemComment());
-        });
+        this.menuItems.forEach(menuItem -> System.out.println(i.incrementAndGet()+ ". " + menuItem.getName()+
+                "\t| W " + menuItem.getPrice() + " | "  + menuItem.getComment()));
         System.out.println("0. 뒤로가기");
     }
 
