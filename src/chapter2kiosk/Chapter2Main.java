@@ -8,13 +8,11 @@ public class Chapter2Main {
     Kiosk kiosk;
     Menu menu;
     public Chapter2Main(){
-        this.menu = new Menu();
+        this.menu = new Menu("Burger Menu");
         this.kiosk = new Kiosk();
         this.sc = new Scanner(System.in);
     }
     public void execute() {
-        menu.showMenuList();
-        System.out.println(menu.getMenuList());
+        kiosk.start();
     }
-
 }

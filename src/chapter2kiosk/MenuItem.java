@@ -12,7 +12,9 @@ public class MenuItem {
         this.price = price;
         this.comment = comment;
     }
-
+    public void setName(String str) {
+        this.name = str;
+    }
     public String getName(){
         return this.name;
     }
