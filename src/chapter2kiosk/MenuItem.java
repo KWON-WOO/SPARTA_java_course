@@ -12,6 +12,11 @@ public class MenuItem {
         this.price = price;
         this.comment = comment;
     }
+    public void getItemInfo(){
+        System.out.println("선택한 메뉴: " + this.name+
+                (this.name.length() < 14 ?"\t\t":"\t") +
+                "| W " + this.price + " | "  + this.comment);
+    }
     public void setName(String str) {
         this.name = str;
     }
