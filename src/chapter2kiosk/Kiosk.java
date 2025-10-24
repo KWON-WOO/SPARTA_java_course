@@ -1,7 +1,5 @@
 package chapter2kiosk;
 
-import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -10,10 +8,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Kiosk {
     private List<Menu> categories;
-    private Menu category;
-    private List<MenuItem> menuList;
-    private MenuItem menuItem;
     private CartItems cartItems;
+    private Menu category;
+
     Kiosk() {
         //장바구니
         this.cartItems = new CartItems();
@@ -23,8 +20,7 @@ public class Kiosk {
         this.categories.add(new Menu("Drinks"));
         this.categories.add(new Menu("Desserts"));
 
-        /**
-         * get(0) -> Burgers
+        /** get(0) -> Burgers
          * get(1) -> Drinks
          * get(2) -> Desserts
          * Menu class 안에 List<MenuItem>이 있음
@@ -49,48 +45,75 @@ public class Kiosk {
      */
     public void start() {
         Scanner sc = new Scanner(System.in);
-        int choiceCategory = 0;
+        int choiceCategory;
         int selectItem = 0;
-        int addCart = 0;
+        int choice;
         while (true) {
             AtomicInteger i = new AtomicInteger(0);
-            /**
-             * 메뉴 출력문. 장바구니에 추가한 메뉴가 있을 시 주문 메뉴가 출력됨.
+            /** 메뉴 출력문. 장바구니에 추가한 메뉴가 있을 시 주문 메뉴가 출력됨.
              */
             System.out.println("[ MAIN MENU ]");
             this.categories.forEach(menu ->
                     System.out.println(i.incrementAndGet() + ". " + menu.getMenuName()));
             System.out.println("0. Exit");
-            if (cartItems.checkCartisEmpty()) {
 
+            if (cartItems.checkCartisNotEmpty()) {
+                System.out.println("""
+                        [ ORDER MENU ]
+                        4. Orders
+                        5. Cancel
+                        """);
             }
+
             try {
                 choiceCategory = sc.nextInt();
-                if (choiceCategory > 3) throw new InputMismatchException();
 
-                this.category = this.categories.get(choiceCategory - 1);
-                this.category.showMenuInfo();
-                selectItem = sc.nextInt();
-//                System.out.println(this.category.getSize() + "\t"  + selectItem);
-                if (this.category.getSize() < selectItem) {
+                if (choiceCategory == 0) break;
+
+                if (choiceCategory > 5 ||
+                        (!cartItems.checkCartisNotEmpty() && choiceCategory >3))
                     throw new InputMismatchException();
-                }
-                System.out.println();
-                this.category.getMenuItem(selectItem - 1).getItemInfo();
-                System.out.print("""
-                        위 메뉴를 장바구니에 추가하시겠습니까?
-                        1. 확인\t\t2. 취소
-                        ->""");
-                addCart = sc.nextInt();
-                if (addCart == 1) {
-                    this.cartItems.addItem(this.category.getMenuItem(selectItem-1));
-                    System.out.println(this.category.getMenuItem(selectItem - 1).getName() + "(이)가 장바구니에 추가되었습니다.");
-                } else if (addCart == 2) {
-                    System.out.print("취소되었습니다.");
-                } else{
-                    throw new IndexOutOfBoundsException();
-                }
+                if (choiceCategory <= 3) {
+                    this.category = this.categories.get(choiceCategory - 1);
+                    this.category.printItemsInfo();
+                    selectItem = sc.nextInt();
 
+//                System.out.println(this.category.getSize() + "\t"  + selectItem);
+                    if (this.category.getSize() < selectItem) {
+                        throw new InputMismatchException();
+                    }
+                    System.out.print("\n 선택한 메뉴: ");
+                    this.category.getMenuItem(selectItem - 1).getItemInfo();
+                    System.out.print("""
+                            위 메뉴를 장바구니에 추가하시겠습니까?
+                            1. 확인\t\t2. 취소
+                            ->""");
+                    choice = sc.nextInt();
+                    if (choice == 1) {
+                        this.cartItems.addItem(this.category.getMenuItem(selectItem - 1));
+                        System.out.println(this.category.getMenuItem(selectItem - 1).getName() + "(이)가 장바구니에 추가되었습니다.");
+                    } else if (choice == 2) {
+                        System.out.print("취소되었습니다.");
+                    } else {
+                        throw new IndexOutOfBoundsException();
+                    }
+                } else {
+                    if (choiceCategory == 4){
+                        System.out.println("아래와 같이 주문 하시겠습니까?\n");
+                        System.out.println("[ Orders ]");
+                        cartItems.printItemList();
+
+                        System.out.println("[ Total ]\nW " + cartItems.getTotalPrice()+
+                                "\n\n1. 주문\t\t2. 메뉴판");
+                        choice = sc.nextInt();
+                        if (choice == 1) {
+                            System.out.print("주문이 완료되었습니다. 금액은 W " + cartItems.getTotalPrice() + "입니다.");
+                            cartItems.clearCart();
+                        }
+                    } else {
+                        this.cartItems.clearCart();
+                    }
+                }
             } catch (IndexOutOfBoundsException e) { //0번 인덱스 혹은 그 이외 다른 값들이 들어왔을 때 처리.
                 System.out.print("잘못된 입력값입니다. 다시 입력하시려면 아무 키나 눌러주세요.");
                 sc.nextLine(); //버퍼를 비워주기 위한 Input
