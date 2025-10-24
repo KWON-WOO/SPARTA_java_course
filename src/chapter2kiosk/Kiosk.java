@@ -5,8 +5,37 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 public class Kiosk {
+    public enum Discount{
+        NATIONAL_MERIT_RECIPIENT(1, price -> price * 0.9),
+        SOLDIER(2, price -> price * 0.95),
+        STUDENT(3, price -> price * 0.97),
+        NORMAL(4, price -> price);
+
+        private final int symbol;
+        private final Function<Double, Double> calc;
+//        private final Function<T, R> function;
+
+        Discount(int symbol){
+            this.symbol = symbol;
+            this.calc = null;
+        }
+
+        Discount(int symbol, Function<Double, Double> calc){
+            this.symbol = symbol;
+            this.calc = calc;
+        }
+
+        public Double apply(Double number1) {
+            return calc.apply(number1);
+        }
+
+        public int getSymbol(){
+            return this.symbol;
+        }
+    }
     private List<Menu> categories;
     private CartItems cartItems;
     private Menu category;
@@ -48,34 +77,22 @@ public class Kiosk {
         int choiceCategory;
         int selectItem = 0;
         int choice;
+        boolean cartFlag = false;
         while (true) {
-            AtomicInteger i = new AtomicInteger(0);
-            /** 메뉴 출력문. 장바구니에 추가한 메뉴가 있을 시 주문 메뉴가 출력됨.
-             */
-            System.out.println("[ MAIN MENU ]");
-            this.categories.forEach(menu ->
-                    System.out.println(i.incrementAndGet() + ". " + menu.getMenuName()));
-            System.out.println("0. Exit");
+            cartFlag = cartItems.checkCartisNotEmpty();
 
-            if (cartItems.checkCartisNotEmpty()) {
-                System.out.println("""
-                        [ ORDER MENU ]
-                        4. Orders
-                        5. Cancel
-                        """);
-            }
+            //메인메뉴 출력. 주문선택까지 가능.
+            printMainMenu(cartFlag);
 
             try {
                 choiceCategory = sc.nextInt();
-
                 if (choiceCategory == 0) break;
 
                 if (choiceCategory > 5 ||
-                        (!cartItems.checkCartisNotEmpty() && choiceCategory >3))
+                        (!cartItems.checkCartisNotEmpty() && choiceCategory > 3))
                     throw new InputMismatchException();
                 if (choiceCategory <= 3) {
-                    this.category = this.categories.get(choiceCategory - 1);
-                    this.category.printItemsInfo();
+                    printMenu(choiceCategory);
                     selectItem = sc.nextInt();
 
 //                System.out.println(this.category.getSize() + "\t"  + selectItem);
@@ -98,23 +115,14 @@ public class Kiosk {
                         throw new IndexOutOfBoundsException();
                     }
                 } else {
-                    if (choiceCategory == 4){
-                        System.out.println("아래와 같이 주문 하시겠습니까?\n");
-                        System.out.println("[ Orders ]");
-                        cartItems.printItemList();
-
-                        System.out.println("[ Total ]\nW " + cartItems.getTotalPrice()+
-                                "\n\n1. 주문\t\t2. 메뉴판");
-                        choice = sc.nextInt();
-                        if (choice == 1) {
-                            System.out.print("주문이 완료되었습니다. 금액은 W " + cartItems.getTotalPrice() + "입니다.");
-                            cartItems.clearCart();
-                        }
+                    if (choiceCategory == 4) {
+                       order(sc);
                     } else {
                         this.cartItems.clearCart();
                     }
                 }
-            } catch (IndexOutOfBoundsException e) { //0번 인덱스 혹은 그 이외 다른 값들이 들어왔을 때 처리.
+                /** 혹시라도 다른 예외처리가 발생할 수도 있기에 구분해둠.*/
+            } catch (IndexOutOfBoundsException e) {
                 System.out.print("잘못된 입력값입니다. 다시 입력하시려면 아무 키나 눌러주세요.");
                 sc.nextLine(); //버퍼를 비워주기 위한 Input
             } catch (InputMismatchException e) {
@@ -123,13 +131,64 @@ public class Kiosk {
                 sc.nextLine();
             }
         }
-        // 입력 받은 숫자가 올바르다면 인덱스로 활용하여 List에 접근하기
-        // List<Menu>에 인덱스로 접근하면 Menu만 추출할 수 있겠죠?
 
-        // Menu가 가진 List<MenuItem>을 반복문을 활용하여 햄버거 메뉴 출력
+    }
+    /** 메뉴 출력문. 장바구니에 추가한 메뉴가 있을 시 주문 메뉴가 출력됨. */
+    public void printMainMenu(Boolean cartFlag) {
+        AtomicInteger i = new AtomicInteger(0);
+        System.out.println("[ MAIN MENU ]");
+        this.categories.forEach(menu ->
+                System.out.println(i.incrementAndGet() + ". " + menu.getMenuName()));
+        System.out.println("0. Exit");
 
-        // 숫자 입력 받기
-        // 입력 받은 숫자가 올바르다면 인덱스로 활용해서 Menu가 가지고 있는 List<MenuItem>에 접근하기
-        // menu.getMenuItems().get(i); 같은 형식으로 하나씩 들어가서 얻어와야 합니다.
+        //장바구니가 비어있지 않을 때 order menu 추가.
+        if (cartFlag) {
+            System.out.println("""
+                        [ ORDER MENU ]
+                        4. Orders
+                        5. Cancel
+                        """);
+        }
+    }
+
+    public void order(Scanner sc){
+        int choice;
+        double price = 0;
+        Discount discount;
+        System.out.println("아래와 같이 주문 하시겠습니까?\n");
+        System.out.println("[ Orders ]");
+        cartItems.printItemList();
+
+        System.out.println("[ Total ]\nW " + cartItems.getTotalPrice() +
+                "\n\n1. 주문\t\t2. 메뉴판");
+        choice = sc.nextInt();
+        if (choice == 1) {
+            System.out.print("""
+                    할인 정보를 입력해주세요.
+                    1. 국가유공자 : 10%
+                    2. 군인      : 5%
+                    3. 학생      : 3%
+                    4. 일반      : 0%
+                    ->""");
+            int num = sc.nextInt();
+            for (Discount disc: Discount.values()) {
+                if (disc.getSymbol() == num) {
+                    try{
+                        price = disc.apply(cartItems.getTotalPrice());
+                        System.out.println("주문이 완료되었습니다. 금액은 W " + price + " 입니다.");
+                        cartItems.clearCart();
+                    } catch(Exception e){
+                        System.out.println("입력값이 잘못되었습니다. 다시 입력해주세요");
+                        sc.nextLine();
+                    }
+                }
+            }
+
+        }
+    }
+
+    public void printMenu(int choiceCategory){
+        this.category = this.categories.get(choiceCategory - 1);
+        this.category.printItemsInfo();
     }
 }

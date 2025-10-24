@@ -42,19 +42,6 @@ public class Menu {
         int padding = width - str.length();
         return str + " ".repeat(padding);
     }
-//    public int checkStringSize(String str){     //사이즈 반환
-//        char[] charArr = str.toCharArray();
-//        int size = 0;
-//        for (char word: charArr){
-//            if (word > 128) {
-//                size += 2;
-//            } else  {
-//                size+= 1;
-//            }
-//        }
-//        return size;
-//    }
-
 
     public int getSize(){
         return this.menuItems.size();

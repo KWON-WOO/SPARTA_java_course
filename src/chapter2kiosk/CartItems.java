@@ -37,7 +37,6 @@ public class CartItems {
         return totalPrice;
     }
     public String setMenuNameWidth(String str, int width){ // 패딩 추가
-//        int length = checkStringSize(str);
         int padding = width - str.length();
         return str + " ".repeat(padding);
     }
