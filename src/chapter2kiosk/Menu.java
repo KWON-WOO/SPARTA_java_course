@@ -7,7 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Menu {
     private String name;
     private List<MenuItem> menuItems;
-    Menu(String name){
+    //메뉴의 생성자
+    public Menu(String name){
         this.name = name;
         this.menuItems = new ArrayList<>();
     }
@@ -33,6 +34,7 @@ public class Menu {
         ));
         System.out.print(" 0. 뒤로가기 \n->");
     }
+
     public String getMenuName(){
         return this.name;
     }

@@ -8,7 +8,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 public class Kiosk {
-    public enum Discount{
+    /**
+     * 장바구니에서 결제 시 할인률을 지정해주는 enum클래스
+     */
+    public enum Discount {
         NATIONAL_MERIT_RECIPIENT(1, price -> price * 0.9),
         SOLDIER(2, price -> price * 0.95),
         STUDENT(3, price -> price * 0.97),
@@ -18,12 +21,12 @@ public class Kiosk {
         private final Function<Double, Double> calc;
 //        private final Function<T, R> function;
 
-        Discount(int symbol){
+        Discount(int symbol) {
             this.symbol = symbol;
             this.calc = null;
         }
 
-        Discount(int symbol, Function<Double, Double> calc){
+        Discount(int symbol, Function<Double, Double> calc) {
             this.symbol = symbol;
             this.calc = calc;
         }
@@ -32,10 +35,11 @@ public class Kiosk {
             return calc.apply(number1);
         }
 
-        public int getSymbol(){
+        public int getSymbol() {
             return this.symbol;
         }
     }
+
     private List<Menu> categories;
     private CartItems cartItems;
     private Menu category;
@@ -45,27 +49,17 @@ public class Kiosk {
         this.cartItems = new CartItems();
         //메뉴 이름을 인자값으로 리스트 안에 메뉴객체 추가.
         this.categories = new ArrayList<>();
-        this.categories.add(new Menu("Burgers"));
-        this.categories.add(new Menu("Drinks"));
-        this.categories.add(new Menu("Desserts"));
+    }
 
-        /** get(0) -> Burgers
-         * get(1) -> Drinks
-         * get(2) -> Desserts
-         * Menu class 안에 List<MenuItem>이 있음
-         */
-        //Burgers
-        this.categories.get(0).setMenuItem(new MenuItem("PineappleBurger", 8.9, "패티와 파인애플의 절묘한 만남!"));
-        this.categories.get(0).setMenuItem(new MenuItem("DurianBurger", 9.9, "버거와 두리안의 끔찍한 만남!"));
-        this.categories.get(0).setMenuItem(new MenuItem("KiwiBurger", 8.8, "파인애플 들어간 올라간 패티도 맛있는데 키위라고 맛 없겠어?"));
-        //Drinks
-        this.categories.get(1).setMenuItem(new MenuItem("Dr.pepper", 2.5, "체리향과 함께하는 청량감!"));
-        this.categories.get(1).setMenuItem(new MenuItem("MountainDew", 2.5, "자동차 워셔액 아닙니다ㅡㅡ"));
-        this.categories.get(1).setMenuItem(new MenuItem("RedBull", 3.5, "이게.. 버거집에..?"));
-        //Desserts
-        this.categories.get(2).setMenuItem(new MenuItem("CheeseCake", 7.0, "이건 맛 없을 수가 없다! 꾸덕하고 고소한 치즈케익!"));
-        this.categories.get(2).setMenuItem(new MenuItem("Macaron", 2.5, "설탕에 절여져볼까?"));
-        this.categories.get(2).setMenuItem(new MenuItem("CaramelPudding", 5.8, "버거집에 이런 게 있는 게 맞나? 맛있겠다.."));
+    /**
+     * 메인에서 갖고 올 category를 리스트에 담는 메서드
+     * get(0) -> Burgers
+     * get(1) -> Drinks
+     * get(2) -> Desserts
+     * Menu class 안에 List<MenuItem>이 있음
+     */
+    public void addCategory(Menu category) {
+        this.categories.add(category);
     }
 
     /**
@@ -77,6 +71,7 @@ public class Kiosk {
         int choiceCategory;
         int selectItem = 0;
         int choice;
+        int categoriesSize = categories.size();
         boolean cartFlag = false;
         while (true) {
             cartFlag = cartItems.checkCartisNotEmpty();
@@ -86,12 +81,13 @@ public class Kiosk {
 
             try {
                 choiceCategory = sc.nextInt();
+                // 반복문 while의 종료 조건.
                 if (choiceCategory == 0) break;
-
-                if (choiceCategory > 5 ||
-                        (!cartItems.checkCartisNotEmpty() && choiceCategory > 3))
+                //인풋값이 잘못 들어왔을 때 InputMisMatchException 발생시켜줌.
+                if (inputExceptionFlag(choiceCategory, categoriesSize))
                     throw new InputMismatchException();
-                if (choiceCategory <= 3) {
+
+                if (choiceCategory <= categoriesSize) {
                     printMenu(choiceCategory);
                     selectItem = sc.nextInt();
 
@@ -99,6 +95,7 @@ public class Kiosk {
                     if (this.category.getSize() < selectItem) {
                         throw new InputMismatchException();
                     }
+
                     System.out.print("\n 선택한 메뉴: ");
                     this.category.getMenuItem(selectItem - 1).getItemInfo();
                     System.out.print("""
@@ -115,8 +112,8 @@ public class Kiosk {
                         throw new IndexOutOfBoundsException();
                     }
                 } else {
-                    if (choiceCategory == 4) {
-                       order(sc);
+                    if (choiceCategory == categoriesSize + 1) {
+                        order(sc);
                     } else {
                         this.cartItems.clearCart();
                     }
@@ -133,7 +130,11 @@ public class Kiosk {
         }
 
     }
-    /** 메뉴 출력문. 장바구니에 추가한 메뉴가 있을 시 주문 메뉴가 출력됨. */
+
+    /**
+     * 메뉴 출력문. 장바구니에 추가한 메뉴가 있을 시 주문 메뉴가 출력됨.
+     * 카테고리 확장 가능성을 감안해 오더 출력문 수정.
+     */
     public void printMainMenu(Boolean cartFlag) {
         AtomicInteger i = new AtomicInteger(0);
         System.out.println("[ MAIN MENU ]");
@@ -143,15 +144,29 @@ public class Kiosk {
 
         //장바구니가 비어있지 않을 때 order menu 추가.
         if (cartFlag) {
-            System.out.println("""
-                        [ ORDER MENU ]
-                        4. Orders
-                        5. Cancel
-                        """);
+            System.out.printf(" [ ORDER MENU ]\n %d. Orders \n%d. Cancel",
+                    i.incrementAndGet(),i.incrementAndGet());
         }
     }
 
-    public void order(Scanner sc){
+    public void printMenu(int choiceCategory) {
+        this.category = this.categories.get(choiceCategory - 1);
+        this.category.printItemsInfo();
+    }
+
+    /**
+     * 인풋값이 올바르게 들어왔는지 체크해주는 메서드.
+     * @param choiceCategory
+     * @return boolean
+     */
+    public boolean inputExceptionFlag(int choiceCategory, int size){
+        if (choiceCategory > size + 2 ||
+                (!cartItems.checkCartisNotEmpty() && choiceCategory > size))
+            return true;
+        else return false;
+    }
+
+    public void order(Scanner sc) {
         int choice;
         double price = 0;
         Discount discount;
@@ -171,24 +186,20 @@ public class Kiosk {
                     4. 일반      : 0%
                     ->""");
             int num = sc.nextInt();
-            for (Discount disc: Discount.values()) {
+            for (Discount disc : Discount.values()) {
                 if (disc.getSymbol() == num) {
-                    try{
+                    try {
                         price = disc.apply(cartItems.getTotalPrice());
-                        System.out.println("주문이 완료되었습니다. 금액은 W " + price + " 입니다.");
+                        System.out.printf("주문이 완료되었습니다. 금액은 W %-5.2f 입니다.", price);
                         cartItems.clearCart();
-                    } catch(Exception e){
+                    } catch (Exception e) {
                         System.out.println("입력값이 잘못되었습니다. 다시 입력해주세요");
                         sc.nextLine();
                     }
                 }
             }
-
         }
     }
 
-    public void printMenu(int choiceCategory){
-        this.category = this.categories.get(choiceCategory - 1);
-        this.category.printItemsInfo();
-    }
+
 }

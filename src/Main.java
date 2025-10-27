@@ -1,5 +1,6 @@
 import chapter1.Chapter1Main;
 import chapter2kiosk.Chapter2Main;
+import chapter2kiosk.Menu;
 
 import java.util.Scanner;
 
@@ -9,8 +10,8 @@ public class Main {
     public static void main(String[] args) {
         //TIP 캐럿을 강조 표시된 텍스트에 놓고 <shortcut actionId="ShowIntentionActions"/>을(를) 누르면
         // IntelliJ IDEA이(가) 수정을 제안하는 것을 확인할 수 있습니다.
-        Chapter1Main chapter1 = new Chapter1Main();
-        Chapter2Main chapter2 = new Chapter2Main();
+        Chapter1Main chapter1;
+        Chapter2Main chapter2;
         Scanner sc = new Scanner(System.in);
         int selectChapter;
         System.out.print(
@@ -21,9 +22,11 @@ public class Main {
         selectChapter = sc.nextInt();
         switch (selectChapter) {
             case 1:
+                chapter1 = new Chapter1Main();
                 chapter1.execute();
                 break;
             case 2:
+                chapter2 = new Chapter2Main();
                 chapter2.execute();
                 break;
             default:
