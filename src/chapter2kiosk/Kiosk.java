@@ -137,14 +137,14 @@ public class Kiosk {
      */
     public void printMainMenu(Boolean cartFlag) {
         AtomicInteger i = new AtomicInteger(0);
-        System.out.println("[ MAIN MENU ]");
+        System.out.println("\n[ MAIN MENU ]");
         this.categories.forEach(menu ->
                 System.out.println(i.incrementAndGet() + ". " + menu.getMenuName()));
         System.out.println("0. Exit");
 
         //장바구니가 비어있지 않을 때 order menu 추가.
         if (cartFlag) {
-            System.out.printf(" [ ORDER MENU ]\n %d. Orders \n%d. Cancel",
+            System.out.printf("\n[ ORDER MENU ]\n %d. Orders \n%d. Cancel",
                     i.incrementAndGet(),i.incrementAndGet());
         }
     }
@@ -170,7 +170,7 @@ public class Kiosk {
         int choice;
         double price = 0;
         Discount discount;
-        System.out.println("아래와 같이 주문 하시겠습니까?\n");
+        System.out.println("\n아래와 같이 주문 하시겠습니까?\n");
         System.out.println("[ Orders ]");
         cartItems.printItemList();
 
@@ -200,6 +200,4 @@ public class Kiosk {
             }
         }
     }
-
-
 }
