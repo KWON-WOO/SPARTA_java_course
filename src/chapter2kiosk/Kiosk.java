@@ -144,7 +144,7 @@ public class Kiosk {
 
         //장바구니가 비어있지 않을 때 order menu 추가.
         if (cartFlag) {
-            System.out.printf("\n[ ORDER MENU ]\n %d. Orders \n%d. Cancel",
+            System.out.printf("[ ORDER MENU ]\n %d. Orders \n%d. Cancel\n",
                     i.incrementAndGet(),i.incrementAndGet());
         }
     }
