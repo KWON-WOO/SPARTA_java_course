@@ -83,18 +83,11 @@ public class Kiosk {
                 choiceCategory = sc.nextInt();
                 // 반복문 while의 종료 조건.
                 if (choiceCategory == 0) break;
-                //인풋값이 잘못 들어왔을 때 InputMisMatchException 발생시켜줌.
-                if (inputExceptionFlag(choiceCategory, categoriesSize))
-                    throw new InputMismatchException();
 
+                // 음식 카테고리를 선택하였을 시.
                 if (choiceCategory <= categoriesSize) {
                     printMenu(choiceCategory);
                     selectItem = sc.nextInt();
-
-//                System.out.println(this.category.getSize() + "\t"  + selectItem);
-                    if (this.category.getSize() < selectItem) {
-                        throw new InputMismatchException();
-                    }
 
                     System.out.print("\n 선택한 메뉴: ");
                     this.category.getMenuItem(selectItem - 1).getItemInfo();
@@ -103,6 +96,8 @@ public class Kiosk {
                             1. 확인\t\t2. 취소
                             ->""");
                     choice = sc.nextInt();
+
+                    // 장바구니에 추가할지 여부를 검사하는 부분. 만약 출력해준 선택지 이외의 값이 들어오면 Exception 발생.
                     if (choice == 1) {
                         this.cartItems.addItem(this.category.getMenuItem(selectItem - 1));
                         System.out.println(this.category.getMenuItem(selectItem - 1).getName() + "(이)가 장바구니에 추가되었습니다.");
@@ -111,7 +106,12 @@ public class Kiosk {
                     } else {
                         throw new IndexOutOfBoundsException();
                     }
+                    // 음식 카테고리를 벗어난 입력값이 주어졌을 시 실행되는 코드.
                 } else {
+                    //장바구니 값이 없거나 선택 가능한 항목보다 입력값이 클 시 InputMisMatchException 발생시켜줌.
+                    if (inputCategoryIndexExceptionFlag(choiceCategory, categoriesSize))
+                        throw new InputMismatchException();
+
                     if (choiceCategory == categoriesSize + 1) {
                         order(sc);
                     } else {
@@ -145,27 +145,40 @@ public class Kiosk {
         //장바구니가 비어있지 않을 때 order menu 추가.
         if (cartFlag) {
             System.out.printf("[ ORDER MENU ]\n%d. Orders \n%d. Cancel\n",
-                    i.incrementAndGet(),i.incrementAndGet());
+                    i.incrementAndGet(), i.incrementAndGet());
         }
     }
 
+    /**
+     * 카테고리 안에 들은 메뉴들을 순차적으로 출력해줌.
+     *
+     * @param choiceCategory 선택한 카테고리가 담김
+     */
     public void printMenu(int choiceCategory) {
         this.category = this.categories.get(choiceCategory - 1);
         this.category.printItemsInfo();
     }
 
     /**
-     * 인풋값이 올바르게 들어왔는지 체크해주는 메서드.
-     * @param choiceCategory
-     * @return boolean
+     * 카테고리를 선택하는 인풋값이 올바르게 들어왔는지 체크해주는 메서드.
+     * 장바구니 출력 가능 여부를 확인함.
+     * 인풋 값이 장바구니에 물건이 없는데 카테고리 인덱스의 최대값을 초과하거나
+     * 장바구니를 포함한 인덱스를 초과한 입력값이 들어올 시 true 반환.
+     *
+     * @param choiceCategory 선택한 카테고리 입력값을 지님.
+     * @return boolean Exception 발생 여부를 반환함.
      */
-    public boolean inputExceptionFlag(int choiceCategory, int size){
-        if (choiceCategory > size + 2 ||
-                (!cartItems.checkCartisNotEmpty() && choiceCategory > size))
+    public boolean inputCategoryIndexExceptionFlag(int choiceCategory, int size) {
+        if (choiceCategory > size + 2 || !cartItems.checkCartisNotEmpty())
             return true;
         else return false;
     }
 
+    /**
+     * 장바구니와 할인 기능을 담당하는 메서드.
+     *
+     * @param sc 스캐너이긴 한데... 객체 생성을 줄이고 싶어서 넣어봤다.
+     */
     public void order(Scanner sc) {
         int choice;
         double price = 0;
