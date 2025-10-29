@@ -1,9 +1,9 @@
 package chapter2kiosk;
 
 public class MenuItem {
-    private String name;
-    private double price;
-    private String comment;
+    protected String name;
+    protected double price;
+    protected String comment;
 
     MenuItem(String name, double price, String comment){
         this.name = name;

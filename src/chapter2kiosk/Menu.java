@@ -53,10 +53,6 @@ public class Menu {
         return this.menuItems.get(index);
     }
 
-//    public void setMenuName(String name){
-//        this.name = name;
-//        System.out.print("\"" +this.name+"\"으로" + "메뉴명 변경완료.");
-//    }
     /**
      * 리스트를 반환해주기 위해 사용하는 함수. 아마 몇 번 안쓸지도..?
      * @return 메뉴리스트
