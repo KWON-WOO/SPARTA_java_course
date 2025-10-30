@@ -1,0 +1,22 @@
+package chapter2kiosk;
+
+public class Burgers extends MenuItem{
+    private String name;
+    private double price;
+    private String comment;
+
+    Burgers(String name, double price, String comment){
+        this.name = name;
+        this.price = price;
+        this.comment = comment;
+    }
+
+    @Override
+    public String getName(){return this.name;}
+
+    @Override
+    public double getPrice(){ return this.price; }
+
+    @Override
+    public String getComment() { return ""; }
+}

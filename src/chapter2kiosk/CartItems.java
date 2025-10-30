@@ -1,10 +1,11 @@
 package chapter2kiosk;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CartItems {
-    private List<CartItem> menuItems = new ArrayList<>();
+public class CartItems<T extends MenuItem> implements MenuInterface<T> {
+    String name = "Orders";
+    private Map<T, Integer> cartItems = new HashMap<>();
 
     CartItems(){}
 
@@ -12,32 +13,33 @@ public class CartItems {
      * 만약 중복상품이 들어왔을 경우 주문수량에 1을 더해줌.
      * @param menuItem 주문 상품.
      */
-    public void addItem(MenuItem menuItem) {
-        boolean duplicateCheck = true;
-        for (CartItem cartItem : menuItems) {
-            if (cartItem.getName().equals(menuItem.getName())) {
-                cartItem.addQuantity(1);
-                duplicateCheck = false;
-                break;
-            }
+    public void addItem(T menuItem) {
+        if (cartItems.containsKey(menuItem)){
+            cartItems.put(menuItem, cartItems.get(menuItem) + 1);
+        } else {
+            cartItems.put(menuItem, 1);
         }
-        if (duplicateCheck)menuItems.add(new CartItem(menuItem));
     }
 
-    /**
-     *  장바구니에 담긴 아이템들을 출력해주는 출력문.
+
+    /** 장바구니에 담긴 아이템들을 출력해주는 출력문.
      *  아래와 같은 양식으로 출력됨.
      *  주문 갯수 | 주문한 상품 | 가격 | 상품 설명
      */
-    public void printItemList(){
-        for (CartItem menuItem : this.menuItems) {
+    public void printItemsInfo(){
+        for (Map.Entry<T, Integer> entry : this.cartItems.entrySet()) {
             System.out.printf("Order %2d | %s | W %-5s | %s\n",
-                    menuItem.getQuantity(),
-                    setMenuNameWidth(menuItem.getName(), 15),
-                    menuItem.getPrice(),
-                    menuItem.getComment()
+                    entry.getValue(),
+                    setItemNameWidth(entry.getKey().getName(), 15),
+                    entry.getKey().getPrice(),
+                    entry.getKey().getComment()
             );
         }
+    }
+
+    @Override
+    public String getMenuName() {
+        return this.name;
     }
 
     /** 물건들의 총합 가격을 띄워줌.
@@ -46,8 +48,8 @@ public class CartItems {
      */
     public double getTotalPrice(){
         double totalPrice = 0;
-        for (CartItem item: menuItems){
-            totalPrice += item.getPrice() * item.getQuantity();
+        for (Map.Entry<T, Integer> entry : this.cartItems.entrySet()){
+            totalPrice += entry.getKey().getPrice() * entry.getValue();
         }
         return totalPrice;
     }
@@ -58,22 +60,27 @@ public class CartItems {
      * @param width 콘솔에 띄워줄 네임 칸의 길이
      * @return  상품 이름 + 패딩
      */
-    public String setMenuNameWidth(String str, int width){ // 패딩 추가
+    public String setItemNameWidth(String str, int width){ // 패딩 추가
         int padding = width - str.length();
         return str + " ".repeat(padding);
+    }
+
+    @Override
+    public int getSize() {
+        return this.cartItems.size();
     }
 
     /** 장바구니의 값의 유무를 판별하는 메서드.
      * @return 장바구니에 물건이 담겨있으면 true 없으면 false를 반환.
      */
     public boolean checkCartisNotEmpty(){
-        return !menuItems.isEmpty();
+        return !cartItems.isEmpty();
     }
 
     /** 장바구니를 비워주는 메서드.
      * 주문을 완료했거나 주문내역을 삭제를 선택 할 시 호출.
      */
-    public void clearCart(){
-        this.menuItems.clear();
+    public void clear(){
+        this.cartItems.clear();
     }
 }

@@ -1,29 +1,15 @@
 package chapter2kiosk;
 
-public class MenuItem {
-    protected String name;
-    protected double price;
-    protected String comment;
-
-    MenuItem(String name, double price, String comment){
-        this.name = name;
-        this.price = price;
-        this.comment = comment;
-    }
-    public void getItemInfo(){
-        System.out.println(this.name+
-                (this.name.length() < 14 ?"\t\t":"\t") +
-                "| W " + this.price + " | "  + this.comment);
-    }
-    public String getName(){
-        return this.name;
+public abstract class MenuItem {
+    public void getItemInfo() {
+        System.out.println(this.getName()+
+                (this.getName().length() < 14 ?"\t\t":"\t") +
+                "| W " + this.getPrice() + " | "  + this.getComment());
     }
 
-    public double getPrice(){
-        return this.price;
-    }
+    public abstract String getName();
 
-    public String getComment(){
-        return this.comment;
-    }
+    public abstract double getPrice();
+
+    public abstract String getComment();
 }
