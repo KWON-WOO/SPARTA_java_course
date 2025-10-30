@@ -1,15 +1,30 @@
 package chapter2kiosk;
 
-public abstract class MenuItem {
-    public void getItemInfo() {
+public class MenuItem {
+    String name;
+    double price;
+    String comment;
+
+    MenuItem(String name, double price, String comment) {
+        this.name = name;
+        this.price = price;
+        this.comment = comment;
+    }
+    public void printItemInfo() {
         System.out.println(this.getName()+
                 (this.getName().length() < 14 ?"\t\t":"\t") +
                 "| W " + this.getPrice() + " | "  + this.getComment());
     }
 
-    public abstract String getName();
+    public String getName(){
+        return name;
+    }
 
-    public abstract double getPrice();
+    public double getPrice() {
+        return price;
+    }
 
-    public abstract String getComment();
+    public String getComment(){
+        return comment;
+    }
 }

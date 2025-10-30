@@ -24,17 +24,17 @@ public class Chapter2Main {
      */
     public void execute() {
 
-        burgers.addItem(new Burgers("PineappleBurger", 8.9, "패티와 파인애플의 절묘한 만남!"));
-        burgers.addItem(new Burgers("DurianBurger", 9.9, "버거와 두리안의 끔찍한 만남!"));
-        burgers.addItem(new Burgers("KiwiBurger", 8.8, "파인애플 들어간 올라간 패티도 맛있는데 키위라고 맛 없겠어?"));
+        burgers.addItem(new MenuItem("PineappleBurger", 8.9, "패티와 파인애플의 절묘한 만남!"));
+        burgers.addItem(new MenuItem("DurianBurger", 9.9, "버거와 두리안의 끔찍한 만남!"));
+        burgers.addItem(new MenuItem("KiwiBurger", 8.8, "파인애플 들어간 올라간 패티도 맛있는데 키위라고 맛 없겠어?"));
 
-        drinks.addItem(new Drinks("Dr.pepper", 2.5, "체리향과 함께하는 청량감!"));
-        drinks.addItem(new Drinks("MountainDew", 2.5, "자동차 워셔액 아닙니다ㅡㅡ"));
-        drinks.addItem(new Drinks("RedBull", 3.5, "이게.. 버거집에..?"));
+        drinks.addItem(new MenuItem("Dr.pepper", 2.5, "체리향과 함께하는 청량감!"));
+        drinks.addItem(new MenuItem("MountainDew", 2.5, "자동차 워셔액 아닙니다ㅡㅡ"));
+        drinks.addItem(new MenuItem("RedBull", 3.5, "이게.. 버거집에..?"));
 
-        desserts.addItem(new Desserts("CheeseCake", 7.0, "이건 맛 없을 수가 없다! 꾸덕하고 고소한 치즈케익!"));
-        desserts.addItem(new Desserts("Macaron", 2.5, "설탕에 절여져볼까?"));
-        desserts.addItem(new Desserts("CaramelPudding", 5.8, "버거집에 이런 게 있는 게 맞나? 맛있겠다.."));
+        desserts.addItem(new MenuItem("CheeseCake", 7.0, "이건 맛 없을 수가 없다! 꾸덕하고 고소한 치즈케익!"));
+        desserts.addItem(new MenuItem("Macaron", 2.5, "설탕에 절여져볼까?"));
+        desserts.addItem(new MenuItem("CaramelPudding", 5.8, "버거집에 이런 게 있는 게 맞나? 맛있겠다.."));
 
         menuItems.add(burgers);
         menuItems.add(drinks);

@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Menu<T extends MenuItem> implements MenuInterface<T>{
+public class Menu{
     private String name;
-    private List<T> menuItems;
+    private List<MenuItem> menuItems;
     //메뉴의 생성자
     public Menu(String name){
         this.name = name;
         this.menuItems = new ArrayList<>();
     }
-    @Override
-    public void addItem(T menuItem){
+    public void addItem(MenuItem menuItem){
         menuItems.add(menuItem);
     }
 
@@ -52,20 +51,7 @@ public class Menu<T extends MenuItem> implements MenuInterface<T>{
         return this.menuItems.size();
     }
 
-    @Override
-    public void clear() {
-
-    }
-
     public MenuItem getItem(int index){
         return this.menuItems.get(index);
-    }
-
-    /**
-     * 리스트를 반환해주기 위해 사용하는 함수. 아마 몇 번 안쓸지도..?
-     * @return 메뉴리스트
-     */
-    public List<T> getMenuList(){
-        return this.menuItems;
     }
 }

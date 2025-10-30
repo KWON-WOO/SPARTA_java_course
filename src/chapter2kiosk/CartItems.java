@@ -3,9 +3,9 @@ package chapter2kiosk;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CartItems<T extends MenuItem> implements MenuInterface<T> {
+public class CartItems {
     String name = "Orders";
-    private Map<T, Integer> cartItems = new HashMap<>();
+    private Map<MenuItem, Integer> cartItems = new HashMap<>();
 
     CartItems(){}
 
@@ -13,7 +13,7 @@ public class CartItems<T extends MenuItem> implements MenuInterface<T> {
      * 만약 중복상품이 들어왔을 경우 주문수량에 1을 더해줌.
      * @param menuItem 주문 상품.
      */
-    public void addItem(T menuItem) {
+    public void addItem(MenuItem menuItem) {
         if (cartItems.containsKey(menuItem)){
             cartItems.put(menuItem, cartItems.get(menuItem) + 1);
         } else {
@@ -27,7 +27,7 @@ public class CartItems<T extends MenuItem> implements MenuInterface<T> {
      *  주문 갯수 | 주문한 상품 | 가격 | 상품 설명
      */
     public void printItemsInfo(){
-        for (Map.Entry<T, Integer> entry : this.cartItems.entrySet()) {
+        for (Map.Entry<MenuItem, Integer> entry : this.cartItems.entrySet()) {
             System.out.printf("Order %2d | %s | W %-5s | %s\n",
                     entry.getValue(),
                     setItemNameWidth(entry.getKey().getName(), 15),
@@ -37,7 +37,6 @@ public class CartItems<T extends MenuItem> implements MenuInterface<T> {
         }
     }
 
-    @Override
     public String getMenuName() {
         return this.name;
     }
@@ -48,7 +47,7 @@ public class CartItems<T extends MenuItem> implements MenuInterface<T> {
      */
     public double getTotalPrice(){
         double totalPrice = 0;
-        for (Map.Entry<T, Integer> entry : this.cartItems.entrySet()){
+        for (Map.Entry<MenuItem, Integer> entry : this.cartItems.entrySet()){
             totalPrice += entry.getKey().getPrice() * entry.getValue();
         }
         return totalPrice;
@@ -65,7 +64,6 @@ public class CartItems<T extends MenuItem> implements MenuInterface<T> {
         return str + " ".repeat(padding);
     }
 
-    @Override
     public int getSize() {
         return this.cartItems.size();
     }
@@ -73,8 +71,8 @@ public class CartItems<T extends MenuItem> implements MenuInterface<T> {
     /** 장바구니의 값의 유무를 판별하는 메서드.
      * @return 장바구니에 물건이 담겨있으면 true 없으면 false를 반환.
      */
-    public boolean checkCartisNotEmpty(){
-        return !cartItems.isEmpty();
+    public boolean isEmpty(){
+        return cartItems.isEmpty();
     }
 
     /** 장바구니를 비워주는 메서드.

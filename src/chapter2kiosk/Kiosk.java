@@ -16,8 +16,10 @@ public class Kiosk {
 
     int choiceCategory;
     int categoriesSize;
+    int choiceItem;
     int choice;
     boolean cartFlag = false;
+    boolean loopFlag = true;
 
     //생성자에서 필요한 데이터를 받아오도록 수정.
     Kiosk(ArrayList<Menu> categories) {
@@ -26,38 +28,25 @@ public class Kiosk {
     }
 
     /**
-     * 메인에서 갖고 올 category를 리스트에 담는 메서드
-     * get(0) -> Burgers
-     * get(1) -> Drinks
-     * get(2) -> Desserts
-     * Menu class 안에 List<MenuItem>이 있음
-     */
-    public void addCategory(Menu category) {
-        this.categories.add(category);
-    }
-
-    /**
      * 키오스크 프로젝트가 실제로 실행되는 부분.
      * 종료조건(0 입력) 이전까지 무한루프
      */
     public boolean start() {
-        categoriesSize = categories.size();
-        cartFlag = cartItems.checkCartisNotEmpty();
 
-        printMainMenu(cartFlag);
+        printMainMenu();
 
-        choiceCategory = inputValidRange(0, (cartFlag ? categoriesSize + 2 : categoriesSize));
-
-        if (choiceCategory == 0) return false;
+        mainMenuHandler();
 
         if (choiceCategory <= categoriesSize) {
-            addCartItem();
+            menuHandler();
+            addCartHandler();
         } else if (choiceCategory == categoriesSize + 1) {
             order();
+            discountPrice();
         } else {
             cartItems.clear();
         }
-        return true;
+        return loopFlag;
     }
 
 //        int choiceCategory;
@@ -129,8 +118,10 @@ public class Kiosk {
      * 메뉴 출력문. 장바구니에 추가한 메뉴가 있을 시 주문 메뉴가 출력됨.
      * 카테고리 확장 가능성을 감안해 오더 출력문 수정.
      */
-    public void printMainMenu(Boolean cartFlag) {
+    public void printMainMenu() {
+        cartFlag = !cartItems.isEmpty();
         AtomicInteger i = new AtomicInteger(0);
+
         System.out.println("\n[ MAIN MENU ]");
         this.categories.forEach(menu ->
                 System.out.println(i.incrementAndGet() + ". " + menu.getMenuName()));
@@ -141,6 +132,16 @@ public class Kiosk {
             System.out.printf("[ ORDER MENU ]\n%d. Orders \n%d. Cancel\n",
                     i.incrementAndGet(), i.incrementAndGet());
         }
+    }
+
+    /**
+     * 메인메뉴에 대한 이벤트 처리를 담당함.
+     * 0 입력 시 루프를 마치도록 설계
+     */
+    public void mainMenuHandler() {
+        categoriesSize = categories.size();
+        choiceCategory = inputValidRange(0, (cartFlag ? categoriesSize + 2 : categoriesSize));
+        if (choiceCategory == 0) loopFlag = false;
     }
 
     /**
@@ -168,39 +169,47 @@ public class Kiosk {
         }
     }
 
-    public <T extends MenuItem>void printMenuName(MenuInterface<T> menu) {
-        String name = menu.getMenuName();
-
-        System.out.printf("[ %s ]\n",
-                name.equals("Orders") ? "Orders" : name.toUpperCase() + " MENU");
-    }
-
-    /**메뉴 안에 들은 아이템들을 순차적으로 출력해줌.
-     * @param menu 출력할 아이템을 담은 메뉴 객체
+    /**
+     * 메뉴 카테고리의 이름을 출력해준다.
+     * @param menu 출력하고 싶은 메뉴객체
      */
-    public <T extends MenuItem>void printItemsInfo(MenuInterface<T> menu) {
-        menu.printItemsInfo();
+    public void printMenuName(Menu menu) {
+        String name = menu.getMenuName();
+        System.out.printf("[ %s Menu ]\n", name.toUpperCase());
     }
 
     /**
-     * 장바구니와 할인 기능을 담당하는 메서드.
+     * 메뉴 안에 들은 아이템들을 순차적으로 출력해줌.
+     * @param menu 출력할 아이템을 담은 메뉴 객체
      */
-    public void addCartItem() {
+    public void printItemsInfo(Menu menu) {
+        menu.printItemsInfo();
+    }
+
+    /** 메뉴 선택과 관련된 출력, 이벤트 처리를 담당한다.
+     */
+    public void menuHandler() {
         menu = categories.get(choiceCategory - 1);
 
         printMenuName(menu);
         printItemsInfo(menu);
 
-        int choiceItem = inputValidRange(0, menu.getSize());
+        choiceItem = inputValidRange(0, menu.getSize());
+    }
+
+    /**
+     * 장바구니에 물건을 담는 것과 관련된 것들을 담당하는 메서드.
+     */
+    public void addCartHandler() {
 
         MenuItem item = menu.getItem(choiceItem - 1);
 
         System.out.print("\n 선택한 메뉴: ");
-        item.getItemInfo();
+        item.printItemInfo();
         System.out.print("""
-                    위 메뉴를 장바구니에 추가하시겠습니까?
-                    1. 확인\t\t2. 취소
-                    ->""");
+                위 메뉴를 장바구니에 추가하시겠습니까?
+                1. 확인\t\t2. 취소
+                ->""");
 
         choice = inputValidRange(1, 2);
 
@@ -212,15 +221,23 @@ public class Kiosk {
         }
     }
 
+    /**
+     * 주문과 관련된 처리를 담당한다. 이후 할인과 연계된다.
+     */
     public void order() {
-        double price = 0;
-
-        printMenuName(cartItems);
-        printItemsInfo(cartItems);
+        System.out.println("[ Orders ]");
+        cartItems.printItemsInfo();
 
         System.out.println("[ Total ]\nW " + cartItems.getTotalPrice() +
                 "\n\n1. 주문\t\t2. 메뉴판");
         choice = inputValidRange(1, 2);
+    }
+
+    /**
+     * 상품의 할인을 담당하는 메서드.
+     * Enum Discount를 이용하여 연산함.
+     */
+    public void discountPrice() {
         if (choice == 1) {
             System.out.print("""
                     할인 정보를 입력해주세요.
@@ -230,9 +247,11 @@ public class Kiosk {
                     4. 일반      : 0%
                     ->""");
             int num = inputValidRange(1, 4);
+
             for (Discount disc : Discount.values()) {
                 if (disc.getSymbol() == num) {
-                    price = disc.apply(cartItems.getTotalPrice());
+                    double price = disc.apply(cartItems.getTotalPrice());
+
                     System.out.printf("주문이 완료되었습니다. 금액은 W %-5.2f 입니다.", price);
                     cartItems.clear();
                 }
@@ -240,3 +259,5 @@ public class Kiosk {
         }
     }
 }
+
+
